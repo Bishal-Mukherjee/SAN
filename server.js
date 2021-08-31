@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 require("dotenv").config();
+const path = require("path");
 
 const app = express();
 app.use(express.json({ extended: false }));
@@ -27,7 +28,6 @@ app.use("/api/posts", require("./routes/posts"));
 app.use("/api/notices", require("./routes/notices"));
 
 if (process.env.NODE_ENV === "production") {
-  //set static folder
   app.use(express.static("client/build"));
 
   app.get("*", (req, res) => {
