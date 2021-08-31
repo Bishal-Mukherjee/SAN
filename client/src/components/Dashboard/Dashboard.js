@@ -14,7 +14,7 @@ const Dashboard = () => {
 
   const token = isToken();
 
-  const { designation, year, department, institution } = loggedInUser;
+  const { name, designation, year, department, institution } = loggedInUser;
 
   const getNotices = async () => {
     await fetch(`${process.env.REACT_APP_SERVER_URL}/api/notices/get-notices`, {
@@ -82,10 +82,7 @@ const Dashboard = () => {
   };
 
   if (!designation) {
-    if (document.getElementById("modal-trigger")) {
-      document.getElementById("modal-trigger").click();
-      document.getElementById("addDetails").classList.remove("fade");
-    }
+    history.push(`/loc/profile/${name}`);
   }
 
   useEffect(() => {

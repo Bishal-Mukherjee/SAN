@@ -46,7 +46,7 @@ const Navbar = () => {
     <nav
       className="navbar navbar-expand-lg navbar-light"
       style={{
-        backgroundColor: "#0052cc",
+        backgroundColor: "#0066cc",
         height: "3.3rem",
         marginRight: "-50px",
       }}
@@ -56,7 +56,7 @@ const Navbar = () => {
           marginTop: "13px",
           marginLeft: "1.9rem",
           fontWeight: "300",
-          fontSize: "20px",
+          fontSize: "18px",
           color: "white",
           position: "absolute",
         }}
@@ -67,7 +67,7 @@ const Navbar = () => {
       <button
         data-toggle="modal"
         data-target="#notificationMessages"
-        className="mr-2 ml-auto"
+        className="mr-1 ml-auto"
         style={{ background: "none", border: "none" }}
         onClick={() => {
           getNotifications();
@@ -182,11 +182,11 @@ const Navbar = () => {
 
       <button
         type="button"
-        className="btn btn-primary"
+        className="btn btn-danger"
         data-toggle="modal"
         data-target="#logOut"
         style={{
-          marginRight: "2rem",
+          marginRight: "1.3rem",
           height: "2.5rem",
           marginTop: "-0.1rem",
         }}

@@ -201,7 +201,7 @@ const Sidebar = () => {
             </div>
 
             <div>
-              {isAuth().designation !== "Student" && (
+              {isAuth().designation && isAuth().designation !== "Student" && (
                 <div style={{ marginTop: "-1rem" }}>
                   <a href="/loc/add-assignment">
                     <i id="add-assignment-button" className="fas fa-plus"></i>
