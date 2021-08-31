@@ -81,6 +81,13 @@ const Login = () => {
     setUserEmail({ ...userEmail, [e.target.name]: e.target.value });
   };
 
+  const handleInputInputLabel = (elementID) => {
+    if (document.getElementById(`${elementID}`)) {
+      document.getElementById(`${elementID}`).style.fontWeight = "600";
+      document.getElementById(`${elementID}`).style.marginTop = "0.5rem";
+    }
+  };
+
   const handleForgotPasswordEmailSubmit = (e) => {
     e.preventDefault();
     genOtp(femail).then((res) => {
@@ -132,6 +139,7 @@ const Login = () => {
               }}
             >
               <label
+                id="email-label"
                 style={{
                   fontWeight: "100",
                   marginTop: "1rem",
@@ -150,7 +158,7 @@ const Login = () => {
                   outline: "none",
                   marginLeft: "0.5rem",
                 }}
-                className=""
+                onClick={() => handleInputInputLabel("email-label")}
                 placeholder="Enter your email"
                 type="text"
                 name="email"
@@ -160,6 +168,7 @@ const Login = () => {
               />
               <br />
               <label
+                id="password-label"
                 style={{
                   fontWeight: "100",
                   marginTop: "1rem",
@@ -170,6 +179,7 @@ const Login = () => {
               </label>
               <br />
               <input
+                id="password-input"
                 style={{
                   width: "17rem",
                   borderRadius: "5px",
@@ -178,7 +188,7 @@ const Login = () => {
                   outline: "none",
                   marginLeft: "0.5rem",
                 }}
-                className=""
+                onClick={() => handleInputInputLabel("password-label")}
                 placeholder="Enter your password"
                 type="password"
                 name="password"
@@ -194,7 +204,7 @@ const Login = () => {
                   width: "18rem",
                   borderRadius: "2rem",
                   backgroundColor: "#24a0ed",
-                  color:"white"
+                  color: "white",
                 }}
                 className="btn"
                 type="submit"

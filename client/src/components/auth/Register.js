@@ -65,6 +65,13 @@ const Register = () => {
     }
   };
 
+  const handleInputInputLabel = (elementID) => {
+    if (document.getElementById(`${elementID}`)) {
+      document.getElementById(`${elementID}`).style.fontWeight = "600";
+      document.getElementById(`${elementID}`).style.marginTop = "0.5rem";
+    }
+  };
+
   return (
     <Fragment>
       {!token && (
@@ -98,6 +105,7 @@ const Register = () => {
             }}
           >
             <label
+              id="name-label"
               style={{
                 fontWeight: "100",
                 marginTop: "1rem",
@@ -116,6 +124,7 @@ const Register = () => {
                 outline: "none",
                 marginLeft: "0.5rem",
               }}
+              onClick={() => handleInputInputLabel("name-label")}
               placeholder="Enter your name"
               type="text"
               name="name"
@@ -125,6 +134,7 @@ const Register = () => {
             />
             <br />
             <label
+              id="email-label"
               style={{
                 fontWeight: "100",
                 marginTop: "1rem",
@@ -143,6 +153,7 @@ const Register = () => {
                 outline: "none",
                 marginLeft: "0.5rem",
               }}
+              onClick={() => handleInputInputLabel("email-label")}
               placeholder="Enter your email"
               type="text"
               name="email"
@@ -152,6 +163,7 @@ const Register = () => {
             />
             <br />
             <label
+              id="password-label"
               style={{
                 fontWeight: "100",
                 marginTop: "1rem",
@@ -170,7 +182,7 @@ const Register = () => {
                 outline: "none",
                 marginLeft: "0.5rem",
               }}
-              className=""
+              onClick={() => handleInputInputLabel("password-label")}
               placeholder="Enter your password"
               type="password"
               name="password"
@@ -180,6 +192,7 @@ const Register = () => {
             />
             <br />
             <label
+              id="confirm-password-label"
               style={{
                 fontWeight: "100",
                 marginTop: "1rem",
@@ -198,6 +211,7 @@ const Register = () => {
                 outline: "none",
                 marginLeft: "0.5rem",
               }}
+              onClick={() => handleInputInputLabel("confirm-password-label")}
               placeholder="Confirm your password"
               type="password"
               name="confirmPassword"
