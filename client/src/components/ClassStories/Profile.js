@@ -165,9 +165,9 @@ const Profile = () => {
             <option value="St. Xavier's College, Burdwan">
               St. Xavier's College, Burdwan
             </option>
-            <option value="University of Technology, Burdwan">
+            {/* <option value="University of Technology, Burdwan">
               University of Technology, Burdwan
-            </option>
+            </option> */}
           </select>
           <br />
 

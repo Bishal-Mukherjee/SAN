@@ -65,8 +65,20 @@ const Register = () => {
     }
   };
 
+  const disableAll = () => {
+    document.getElementById("name-label").style.fontWeight = "100";
+    document.getElementById("name-label").style.marginTop = "1rem";
+    document.getElementById("email-label").style.fontWeight = "100";
+    document.getElementById("email-label").style.marginTop = "1rem";
+    document.getElementById("password-label").style.fontWeight = "100";
+    document.getElementById("password-label").style.marginTop = "1rem";
+    document.getElementById("confirm-password-label").style.fontWeight = "100";
+    document.getElementById("confirm-password-label").style.marginTop = "1rem";
+  };
+
   const handleInputInputLabel = (elementID) => {
     if (document.getElementById(`${elementID}`)) {
+      disableAll();
       document.getElementById(`${elementID}`).style.fontWeight = "600";
       document.getElementById(`${elementID}`).style.marginTop = "0.5rem";
     }

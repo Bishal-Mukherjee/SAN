@@ -53,8 +53,8 @@ const Navbar = () => {
     >
       <p
         style={{
-          marginTop: "13px",
-          marginLeft: "1.9rem",
+          marginTop: "18px",
+          marginLeft: "2rem",
           fontWeight: "300",
           fontSize: "18px",
           color: "white",
@@ -105,6 +105,14 @@ const Navbar = () => {
               ></p>
               <div className="modal-body card" style={{ borderColor: "white" }}>
                 <div>
+                  {notification.length === 0 && (
+                    <p
+                      className="text-center"
+                      style={{ fontWeight: "100", fontSize: "100px" }}
+                    >
+                      No notifications yet
+                    </p>
+                  )}
                   {notification.map((message) => (
                     <div className="card mt-2 rounded">
                       <a
