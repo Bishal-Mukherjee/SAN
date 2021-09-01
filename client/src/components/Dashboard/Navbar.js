@@ -108,7 +108,7 @@ const Navbar = () => {
                   {notification.length === 0 && (
                     <p
                       className="text-center"
-                      style={{ fontWeight: "100", fontSize: "100px" }}
+                      style={{ fontWeight: "100", fontSize: "25px" }}
                     >
                       No notifications yet
                     </p>
