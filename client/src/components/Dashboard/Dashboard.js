@@ -294,7 +294,13 @@ const Dashboard = () => {
               >
                 Message
               </p>
-              <p style={{ marginTop: "-10px", marginLeft: "5px" }}>
+              <p
+                style={{
+                  marginTop: "-10px",
+                  marginLeft: "5px",
+                  marginBottom: "-2px",
+                }}
+              >
                 {notice.date.substring(0, 10)}
               </p>
               <div

@@ -281,7 +281,7 @@ const ClassStories = () => {
                                       placeholder="Write your doubts.."
                                       style={{
                                         outline: "none",
-                                        width: "85%",
+                                        width: "82%",
                                         borderRadius: "1rem",
                                         borderWidth: "0.1rem",
                                       }}
@@ -396,7 +396,7 @@ const ClassStories = () => {
                                 placeholder="Write your doubts.."
                                 style={{
                                   outline: "none",
-                                  width: "90%",
+                                  width: "82%",
                                   borderRadius: "1rem",
                                 }}
                                 required
@@ -510,7 +510,7 @@ const ClassStories = () => {
                                 placeholder="Write your doubts.."
                                 style={{
                                   outline: "none",
-                                  width: "90%",
+                                  width: "82%",
                                   borderRadius: "1rem",
                                 }}
                                 required
@@ -631,7 +631,7 @@ const ClassStories = () => {
                                 placeholder="Write your doubts.."
                                 style={{
                                   outline: "none",
-                                  width: "90%",
+                                  width: "82%",
                                   borderRadius: "1rem",
                                 }}
                                 required

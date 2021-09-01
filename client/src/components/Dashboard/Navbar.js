@@ -46,7 +46,7 @@ const Navbar = () => {
     <nav
       className="navbar navbar-expand-lg navbar-light"
       style={{
-        backgroundColor: "#0066cc",
+        backgroundColor: "#1a8cff",
         height: "3.3rem",
         marginRight: "-50px",
       }}

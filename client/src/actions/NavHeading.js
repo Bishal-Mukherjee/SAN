@@ -21,7 +21,7 @@ export const getHeading = () => {
     fHeading = "Create Notice";
   }
 
-  if (heading === "profile") {
+  if (heading.substring(0, 7) === "profile") {
     fHeading = "Profile";
   }
 

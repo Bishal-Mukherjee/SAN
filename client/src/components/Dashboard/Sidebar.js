@@ -72,8 +72,8 @@ const Sidebar = () => {
     }
 
     if (heading.substring(0, 7) === "profile") {
-      if (document.getElementById("profile-icon")) {
-        document.getElementById("profile-icon").style.color = "white";
+      if (document.getElementById("profile-button")) {
+        document.getElementById("profile-button").style.color = "white";
       }
     }
   };

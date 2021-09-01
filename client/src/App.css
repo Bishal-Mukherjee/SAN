@@ -72,7 +72,7 @@
   background-color: #1a8cff;
   color: white;
   padding: 5px 10px;
-  border: none;
+  border-color: #ff751a;
 }
 
 .openbtn:hover {
