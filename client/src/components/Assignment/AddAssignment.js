@@ -137,7 +137,6 @@ const AddAssignment = () => {
           <input
             type="checkbox"
             id="text-input"
-            style={{ color: "" }}
             className="mr-2 btn btn-outline-secondary"
             onClick={handleText}
           />
@@ -162,13 +161,12 @@ const AddAssignment = () => {
                   onChange={handleChange("department")}
                   required
                 >
-                  <option value="">-- Select Department --</option>
+                  <option value="">-- Select Deparment --</option>
                   <option value="BCA">BCA</option>
-                  <option value="BSc. Compouter Science">
-                    BSc. Computer Science
-                  </option>
-                  <option value="BBA">BBA</option>
+                  <option value="Computer Science">Computer Science</option>
+                  <option value="Commerce">Commerce</option>
                   <option value="English">English</option>
+                  <option value="Geography">Geography</option>
                 </select>
                 <br />
               </div>
@@ -287,12 +285,12 @@ const AddAssignment = () => {
                 onChange={handleChange("text")}
                 placeholder="Write something.."
                 cols="40"
-                required
               />
             </div>
             <button
               className="btn btn-primary"
               style={{ position: "absolute", marginTop: "3rem" }}
+              type="submit"
             >
               Add
             </button>

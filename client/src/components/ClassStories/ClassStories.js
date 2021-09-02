@@ -119,11 +119,17 @@ const ClassStories = () => {
 
   return (
     <Fragment>
+      {token && posts.length === 0 && (
+        <div className="card" style={{ border: "none" }}>
+          <p style={{ fontWeight: "100", fontSize: "25px" }}>No posts yet</p>
+        </div>
+      )}
       {token && (
         <div>
           {posts.map(
             (post, i) =>
-              post.institution === isAuth().institution && (
+              post.institution === isAuth().institution &&
+              post.department === isAuth().department && (
                 <div
                   key={i}
                   className="card mt-4"

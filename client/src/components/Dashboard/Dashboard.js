@@ -91,6 +91,13 @@ const Dashboard = () => {
 
   return (
     <Fragment>
+      {token && notices.length === 0 && (
+        <div className="card" style={{ border: "none" }}>
+          <p style={{ fontWeight: "100", fontSize: "25px" }}>
+            No notices / messages yet
+          </p>
+        </div>
+      )}
       {token && (
         <div>
           <div>

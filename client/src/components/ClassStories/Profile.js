@@ -193,11 +193,11 @@ const Profile = () => {
             required
           >
             <option value=""> --Select Department-- </option>
-            <option value="BCA">BCA</option>
-            <option value="BBA">BBA</option>
-            <option value="BSc. Computer Science">BSc. Computer Science</option>
-            <option value="BSc. English">BSc. English</option>
-            <option value="BSc. Geography">BSc. Geography</option>
+            <option value="Computer Science">BCA</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Commerce">Commerce</option>
+            <option value="English">English</option>
+            <option value="Geography">Geography</option>
           </select>
           <br />
 
