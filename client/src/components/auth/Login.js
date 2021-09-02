@@ -69,7 +69,7 @@ const Login = () => {
   const visibleEmail = () => {
     if (document.getElementById("forgot-password-email")) {
       if (
-        document.getElementById("forgot-password-email").style.visibility ==
+        document.getElementById("forgot-password-email").style.visibility ===
         "hidden"
       ) {
         document.getElementById("forgot-password-email").style.visibility =

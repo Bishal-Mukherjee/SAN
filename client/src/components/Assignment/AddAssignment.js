@@ -287,6 +287,7 @@ const AddAssignment = () => {
                 onChange={handleChange("text")}
                 placeholder="Write something.."
                 cols="40"
+                required
               />
             </div>
             <button

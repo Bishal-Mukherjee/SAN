@@ -3,10 +3,7 @@ import { Fragment } from "react";
 import { useHistory } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { isAuth, isToken } from "../../actions/auth";
-import {
-  deleteNotificationsActions,
-  deletePostActions,
-} from "../../actions/posts/deleteposts";
+import { deletePostActions } from "../../actions/posts/deleteposts";
 import userImage from "../../assets/userImage.png";
 require("dotenv").config();
 
@@ -19,6 +16,8 @@ const ClassStories = () => {
   });
 
   const { text } = values;
+
+  let postToBeDeleted;
 
   const getStories = async () => {
     await fetch(`${process.env.REACT_APP_SERVER_URL}/api/posts`, {
@@ -52,7 +51,6 @@ const ClassStories = () => {
       setTimeout(function () {
         window.location.reload();
       }, 1000);
-      deleteNotificationsActions(postID, token);
     });
   };
 
@@ -154,6 +152,7 @@ const ClassStories = () => {
                           style={{ border: "none", background: "none" }}
                           data-toggle="modal"
                           data-target="#delete-post"
+                          onClick={() => (postToBeDeleted = post._id)}
                         >
                           <i
                             className="fas fa-trash"
@@ -205,7 +204,7 @@ const ClassStories = () => {
                                   </button>
                                   <button
                                     className="btn btn-outline-danger mt-2"
-                                    onClick={() => deletePost(post._id)}
+                                    onClick={() => deletePost(postToBeDeleted)}
                                   >
                                     Delete
                                   </button>

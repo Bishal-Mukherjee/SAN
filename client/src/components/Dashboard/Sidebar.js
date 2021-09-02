@@ -196,7 +196,7 @@ const Sidebar = () => {
                   fontWeight: "600",
                 }}
               >
-                College Webiste
+                College Website
               </p>
             </div>
 
