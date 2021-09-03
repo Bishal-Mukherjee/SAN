@@ -90,6 +90,21 @@ router.post("/", async (req, res) => {
   });
 });
 
+// @route GET api/users/faculty_members
+// @desc get all the 'Faculty' profiles
+// @access Public
+router.get("/faculty_members", auth, async (req, res) => {
+  const user = await User.find({}).select("-password");
+  let facultyMembers = [];
+  user.map((u) => {
+    if (u.designation !== "Student") {
+      facultyMembers.push(u.name);
+    }
+  });
+
+  return res.status(200).json(facultyMembers);
+});
+
 // @route PUT api/users/verification-mail
 // @desc send verification mail
 // @access public

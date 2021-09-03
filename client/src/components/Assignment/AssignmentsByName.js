@@ -1,7 +1,8 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { isToken } from "../../actions/auth";
 import { isAuth } from "../../actions/auth";
 import { postsByNameActions } from "../../actions/posts/postbyname";
+import { getFacultyMembersActions } from "../../actions/users/facultymembers";
 import userImage from "../../assets/userImage.png";
 import "../../App.css";
 import { useHistory } from "react-router";
@@ -14,7 +15,8 @@ const AssignmentsByName = () => {
     text: "",
   });
 
-  let [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [faculty, setFaculty] = useState([]);
   const history = useHistory();
 
   const { userName, text } = values;
@@ -66,6 +68,14 @@ const AssignmentsByName = () => {
       });
   };
 
+  const getFacultyName = () => {
+    getFacultyMembersActions().then((data) => setFaculty(data));
+  };
+
+  useEffect(() => {
+    getFacultyName();
+  }, []);
+
   return (
     <Fragment>
       <div className="mt-3">
@@ -76,10 +86,9 @@ const AssignmentsByName = () => {
             onChange={(e) => handleChange(e)}
           >
             <option value="">-- Select Faculty --</option>
-            <option value="Bishal Mukherjee">Bishal Mukherjee</option>
-            <option value="Faculty A">Faculty A</option>
-            <option value="Faculty B">Faculty B</option>
-            <option value="Faculty C">Faculty C</option>
+            {faculty.map((f) => (
+              <option value={`${f}`}>{`${f}`}</option>
+            ))}
           </select>
           <button
             id="find-button"
