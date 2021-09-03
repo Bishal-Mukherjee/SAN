@@ -77,10 +77,9 @@ const AssignmentsByName = () => {
           >
             <option value="">-- Select Faculty --</option>
             <option value="Bishal Mukherjee">Bishal Mukherjee</option>
-            <option value="HOD">HOD</option>
-            <option value="Faculty 1">Faculty 1</option>
-            <option value="Faculty 2">Faculty 2</option>
-            <option value="Faculty 3">Faculty 3</option>
+            <option value="Faculty A">Faculty A</option>
+            <option value="Faculty B">Faculty B</option>
+            <option value="Faculty C">Faculty C</option>
           </select>
           <button
             id="find-button"

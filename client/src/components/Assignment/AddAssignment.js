@@ -142,35 +142,33 @@ const AddAssignment = () => {
           />
           <label style={{ fontWeight: "500" }}>Text Only</label>
           <form onSubmit={(e) => handleSubmit(e)}>
-            {isAuth().designation != "HOD" && (
-              <div>
-                <label
-                  className="mt-2"
-                  style={{
-                    fontWeight: "500",
-                    marginBottom: "1px",
-                    marginLeft: "0.5rem",
-                  }}
-                >
-                  For which department?
-                </label>
-                <br />
-                <select
-                  style={{ width: "12rem", height: "2rem" }}
-                  name="department"
-                  onChange={handleChange("department")}
-                  required
-                >
-                  <option value="">-- Select Deparment --</option>
-                  <option value="BCA">BCA</option>
-                  <option value="Computer Science">Computer Science</option>
-                  <option value="Commerce">Commerce</option>
-                  <option value="English">English</option>
-                  <option value="Geography">Geography</option>
-                </select>
-                <br />
-              </div>
-            )}
+            <div>
+              <label
+                className="mt-2"
+                style={{
+                  fontWeight: "500",
+                  marginBottom: "1px",
+                  marginLeft: "0.5rem",
+                }}
+              >
+                For which department?
+              </label>
+              <br />
+              <select
+                style={{ width: "12rem", height: "2rem" }}
+                name="department"
+                onChange={handleChange("department")}
+                required
+              >
+                <option value="">-- Select Deparment --</option>
+                <option value="BCA">BCA</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Commerce">Commerce</option>
+                <option value="English">English</option>
+                <option value="Geography">Geography</option>
+              </select>
+              <br />
+            </div>
 
             <label
               className="mt-2"
