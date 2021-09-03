@@ -54,6 +54,11 @@
   color: #f1f1f1;
 }
 
+#find-button:hover {
+  color: #1a8cff;
+  background-color: #ff9a4d;
+}
+
 /* Position and style the close button (top right corner) */
 /* .sidebar .closebtn {
   position: absolute;

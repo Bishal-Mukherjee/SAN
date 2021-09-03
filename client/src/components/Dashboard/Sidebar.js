@@ -13,6 +13,7 @@ import { Fragment } from "react";
 import ViewDoubts from "../ClassStories/ViewDoubts";
 import ViewAssignment from "../ClassStories/ViewAssignment";
 import FacultyDashboard from "./FacultyDashboard";
+import AssignmentsByName from "../Assignment/AssignmentsByName";
 
 const Sidebar = () => {
   let department, designation, year;
@@ -354,6 +355,11 @@ const Sidebar = () => {
                   exact
                   path="/loc/dashboard/faculty"
                   component={FacultyDashboard}
+                />
+                <Route
+                  exact
+                  path="/loc/find_posts"
+                  component={AssignmentsByName}
                 />
               </Switch>
             </BrowserRouter>

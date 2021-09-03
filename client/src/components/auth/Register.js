@@ -94,8 +94,8 @@ const Register = () => {
             marginTop: "6rem",
             borderColor: "gray",
             borderRadius: "1rem",
-            marginLeft: "10%",
-            marginRight: "10%",
+            marginLeft: "6%",
+            marginRight: "6%",
           }}
         >
           <h2
@@ -129,7 +129,7 @@ const Register = () => {
             <br />
             <input
               style={{
-                width: "17rem",
+                width: "18rem",
                 borderRadius: "5px",
                 borderWidth: "1px",
                 height: "2rem",
@@ -158,7 +158,7 @@ const Register = () => {
             <br />
             <input
               style={{
-                width: "17rem",
+                width: "18rem",
                 borderRadius: "5px",
                 borderWidth: "1px",
                 height: "2rem",
@@ -187,7 +187,7 @@ const Register = () => {
             <br />
             <input
               style={{
-                width: "17rem",
+                width: "18rem",
                 borderRadius: "5px",
                 borderWidth: "1px",
                 height: "2rem",
@@ -216,7 +216,7 @@ const Register = () => {
             <br />
             <input
               style={{
-                width: "17rem",
+                width: "18rem",
                 borderRadius: "5px",
                 borderWidth: "1px",
                 height: "2rem",

@@ -101,14 +101,19 @@ router.post("/", auth, async (req, res) => {
 // @desc Get a particular user posts
 // @access Private
 router.get("/:user_name/posts", auth, async (req, res) => {
-  const user = await User.findOne({ name: req.params.user_name });
-  const posts = await Post.find({ user: user._id, approval: true }).sort({
+  const user = await User.findById(req.user.id).select("-password");
+  const faculty = await User.findOne({ name: req.params.user_name });
+  const posts = await Post.find({
+    user: faculty._id,
+    department: user.department,
+    approval: true,
+  }).sort({
     _id: -1,
   });
-  if (posts) {
+  if (posts.length !== 0) {
     return res.status(200).json(posts);
   } else {
-    return res.status(400).send("No posts yet");
+    return res.status(404).json("NULL");
   }
 });
 
@@ -389,7 +394,7 @@ router.delete("/delete/:post_id", auth, async (req, res) => {
   const user = await User.findById(req.user.id);
   let post = await Post.findById(req.params.post_id);
   if (!post) {
-    return res.status(400).json("Post does exist");
+    return res.status(404).json("Post does exist");
   }
   if (user.designation === "Admin" || user._id.toString() == post.user) {
     post = await Post.findByIdAndRemove(req.params.post_id);

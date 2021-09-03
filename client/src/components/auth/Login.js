@@ -125,8 +125,8 @@ const Login = () => {
               marginTop: "9rem",
               borderColor: "gray",
               borderRadius: "1rem",
-              marginLeft: "12%",
-              marginRight: "12%",
+              marginLeft: "6%",
+              marginRight: "6%",
               paddingTop: "1.5rem",
               paddingBottom: "1.5rem",
             }}
@@ -162,7 +162,7 @@ const Login = () => {
               <br />
               <input
                 style={{
-                  width: "17rem",
+                  width: "18rem",
                   borderRadius: "5px",
                   borderWidth: "1px",
                   height: "2rem",
@@ -192,7 +192,7 @@ const Login = () => {
               <input
                 id="password-input"
                 style={{
-                  width: "17rem",
+                  width: "18rem",
                   borderRadius: "5px",
                   borderWidth: "1px",
                   height: "2rem",
@@ -212,7 +212,7 @@ const Login = () => {
               <br />
               <button
                 style={{
-                  width: "18rem",
+                  width: "19rem",
                   borderRadius: "2rem",
                   backgroundColor: "#24a0ed",
                   color: "white",

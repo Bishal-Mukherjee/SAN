@@ -126,13 +126,19 @@ const ClassStories = () => {
       )}
       {token && (
         <div>
+          <button
+            className="mt-2 btn btn-light"
+            onClick={() => history.push("/loc/find_posts")}
+          >
+            Filter Posts
+          </button>
           {posts.map(
             (post, i) =>
               post.institution === isAuth().institution &&
               post.department === isAuth().department && (
                 <div
                   key={i}
-                  className="card mt-4"
+                  className="card mt-2"
                   style={{ backgroundColor: "#f5f5f0" }}
                 >
                   <div className="card-body card">
