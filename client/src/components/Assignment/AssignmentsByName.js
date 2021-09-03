@@ -89,6 +89,7 @@ const AssignmentsByName = () => {
             {faculty.map((f) => (
               <option value={`${f}`}>{`${f}`}</option>
             ))}
+            
           </select>
           <button
             id="find-button"
