@@ -94,7 +94,7 @@ router.post("/", async (req, res) => {
 // @desc get all the 'Faculty' profiles
 // @access Public
 router.get("/faculty_members", auth, async (req, res) => {
-  const user = await User.find({}).select("-password");
+  const user = await User.find({ verified: true }).select("-password");
   let facultyMembers = [];
   user.map((u) => {
     if (u.designation !== "Student") {
