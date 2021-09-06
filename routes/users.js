@@ -97,8 +97,10 @@ router.get("/faculty_members", auth, async (req, res) => {
   const user = await User.find({ verified: true }).select("-password");
   let facultyMembers = [];
   user.map((u) => {
-    if (u.designation !== "Student") {
-      facultyMembers.push(u.name);
+    if (u.designation) {
+      if (u.designation !== "Student") {
+        facultyMembers.push(u.name);
+      }
     }
   });
 
