@@ -33,6 +33,10 @@ export const getHeading = () => {
     fHeading = "Approve Posts";
   }
 
+  if (heading === "approve-users") {
+    fHeading = "Approve Users";
+  }
+
   if (heading.substring(0, 6) === "doubts") {
     fHeading = "Asked doubts";
   }

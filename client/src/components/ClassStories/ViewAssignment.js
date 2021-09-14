@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from "react";
-import { isAuth, isToken } from "../../actions/auth";
+import { isToken } from "../../actions/auth";
 
 const ViewAssignment = () => {
   const postID = window.location.href.substring(
@@ -33,7 +33,7 @@ const ViewAssignment = () => {
 
   return (
     <Fragment>
-      {!post.approval && isAuth().designation !== "Admin" && (
+      {post === "Not Found" && (
         <div className="card mt-2" style={{ border: "none" }}>
           <h1 style={{ fontWeight: "100" }}>
             post does not exists <br />
@@ -41,10 +41,10 @@ const ViewAssignment = () => {
           </h1>
         </div>
       )}
-      {(post.approval || isAuth().designation === "Admin") && (
+      {post !== "Not Found" && (
         <div className="card mt-2">
           {post.photo && (
-            <div>
+            <div className="text-center">
               <img
                 style={{
                   width: "15rem",
@@ -101,7 +101,7 @@ const ViewAssignment = () => {
           )}
           {!post.photo && !post.pdfdocument && !post.photos && (
             <div className="card" style={{ backgroundColor: "#f5f5f0" }}>
-              <div className="card-body">
+              <div className="card-body bg-white">
                 <p className="text-center mt-3">{post.text}</p>
               </div>
             </div>

@@ -97,7 +97,7 @@ router.get("/faculty_members", auth, async (req, res) => {
   const user = await User.find({ verified: true }).select("-password");
   let facultyMembers = [];
   user.map((u) => {
-    if (u.designation) {
+    if (u.designation && u.approved == true) {
       if (u.designation !== "Student") {
         facultyMembers.push(u.name);
       }
@@ -364,6 +364,66 @@ router.put("/edit-user", auth, async (req, res) => {
     }
     return res.status(200).json(user);
   });
+});
+
+// @route GET api/users/all-users
+// @desc get all users
+// @access Private(Admin)
+router.get("/all-users", auth, async (req, res) => {
+  let ifFaculty = [];
+  const admin = await User.findById(req.user.id).select("-password");
+  if (admin.designation === "Admin") {
+    const users = await User.find({}).select("-password");
+    users.map((u) => {
+      if (u.verified == true) {
+        if (u.designation == "HOD" || u.designation == "Faculty") {
+          ifFaculty.push(u);
+        }
+      }
+    });
+
+    return res.status(200).json(ifFaculty);
+  }
+});
+
+// @route GET api/users/approve-user/:user_id
+// @desc approve User
+// @access Private(Admin)
+router.get("/approve-user/:user_id", auth, async (req, res) => {
+  const user = await User.findById(req.params.user_id).select("-password");
+  const admin = await User.findById(req.user.id).select("-password");
+  if (admin.designation === "Admin") {
+    if (user.approved === true) {
+      return res.status(200).send("Already Approved");
+    } else {
+      user.approved = true;
+      user.save((err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        return res.status(200).json(result);
+      });
+    }
+  }
+});
+
+// @route GET api/users/deny-approval-user/:user_id
+// @desc deny approval User
+// @access Private(Admin)
+router.get("/deny-approval-user/:user_id", auth, async (req, res) => {
+  const user = await User.findById(req.params.user_id).select("-password");
+  const admin = await User.findById(req.user.id).select("-password");
+  if (admin.designation === "Admin") {
+    if (user.approved === true) {
+      user.approved = false;
+      user.save((err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        return res.status(200).json(result);
+      });
+    }
+  }
 });
 
 module.exports = router;

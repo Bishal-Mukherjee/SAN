@@ -14,6 +14,7 @@ import ViewDoubts from "../ClassStories/ViewDoubts";
 import ViewAssignment from "../ClassStories/ViewAssignment";
 import FacultyDashboard from "./FacultyDashboard";
 import AssignmentsByName from "../Assignment/AssignmentsByName";
+import ApproveUsers from "./ApproveUsers";
 
 const Sidebar = () => {
   let department, designation, year;
@@ -45,7 +46,7 @@ const Sidebar = () => {
         document.getElementById("dashboard-button").style.color = "white";
       }
     }
-    if (heading === "class-stories") {
+    if (heading === "class-stories" || heading === "find-posts") {
       if (document.getElementById("class-stories-button")) {
         document.getElementById("class-stories-button").style.color = "white";
       }
@@ -69,6 +70,12 @@ const Sidebar = () => {
     if (heading === "approve-posts") {
       if (document.getElementById("approve-posts-button")) {
         document.getElementById("approve-posts-button").style.color = "white";
+      }
+    }
+
+    if (heading === "approve-users") {
+      if (document.getElementById("approve-users-button")) {
+        document.getElementById("approve-users-button").style.color = "white";
       }
     }
 
@@ -107,7 +114,7 @@ const Sidebar = () => {
             >
               {designation}
             </p>
-            {isAuth().designation === "HOD" && (
+            {isAuth().designation === "HOD" && isAuth().approved == true && (
               <div>
                 <a href="/loc/dashboard/faculty" style={{ marginTop: "-1rem" }}>
                   <i id="dashboard-button" className="fas fa-inbox"></i>
@@ -126,7 +133,7 @@ const Sidebar = () => {
               </div>
             )}
 
-            {isAuth().designation === "Faculty" && (
+            {isAuth().designation === "Faculty" && isAuth().approved == true && (
               <div>
                 <a href="/loc/dashboard/faculty" style={{ marginTop: "-1rem" }}>
                   <i id="dashboard-button" className="fas fa-inbox"></i>
@@ -202,32 +209,34 @@ const Sidebar = () => {
             </div>
 
             <div>
-              {isAuth().designation && isAuth().designation !== "Student" && (
-                <div style={{ marginTop: "-1rem" }}>
-                  <a href="/loc/add-assignment">
-                    <i id="add-assignment-button" className="fas fa-plus"></i>
-                  </a>
-                  <p
-                    style={{
-                      fontSize: "13px",
-                      marginTop: "-5px",
-                      color: "white",
-                      marginLeft: "1.2rem",
-                      fontWeight: "600",
-                    }}
-                  >
-                    Add <br />
-                    <span style={{ fontSize: "11px", marginLeft: "-1.0rem" }}>
-                      Assignment
-                    </span>
-                  </p>
-                </div>
-              )}
+              {isAuth().designation &&
+                isAuth().designation !== "Student" &&
+                isAuth().approved == true && (
+                  <div style={{ marginTop: "-1rem" }}>
+                    <a href="/loc/add-assignment">
+                      <i id="add-assignment-button" className="fas fa-plus"></i>
+                    </a>
+                    <p
+                      style={{
+                        fontSize: "13px",
+                        marginTop: "-5px",
+                        color: "white",
+                        marginLeft: "1.2rem",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Add <br />
+                      <span style={{ fontSize: "11px", marginLeft: "-1.0rem" }}>
+                        Assignment
+                      </span>
+                    </p>
+                  </div>
+                )}
             </div>
 
             {designation &&
-              designation !== "Student" &&
-              designation !== "Faculty" && (
+              (designation == "Admin" || designation == "HOD") &&
+              isAuth().approved == true && (
                 <div style={{ marginTop: "-1rem" }}>
                   <a href="/loc/create-notice">
                     <i
@@ -249,7 +258,7 @@ const Sidebar = () => {
                 </div>
               )}
 
-            {designation === "Admin" && (
+            {/* {designation === "Admin" && (
               <div style={{ marginTop: "-1rem" }}>
                 <a href="/loc/approve-posts">
                   <i id="approve-posts-button" className="fas fa-check"></i>
@@ -265,6 +274,26 @@ const Sidebar = () => {
                 >
                   Approve <br />
                   <span className="ml-2">Posts</span>
+                </p>
+              </div>
+            )} */}
+
+            {designation === "Admin" && (
+              <div style={{ marginTop: "-1rem" }}>
+                <a href="/loc/approve-users">
+                  <i id="approve-users-button" className="fas fa-check"></i>
+                </a>
+                <p
+                  style={{
+                    fontSize: "13px",
+                    marginTop: "-5px",
+                    color: "white",
+                    marginLeft: "11px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Approve <br />
+                  <span className="ml-2">Users</span>
                 </p>
               </div>
             )}
@@ -358,8 +387,13 @@ const Sidebar = () => {
                 />
                 <Route
                   exact
-                  path="/loc/find_posts"
+                  path="/loc/find-posts"
                   component={AssignmentsByName}
+                />
+                <Route
+                  exact
+                  path="/loc/approve-users"
+                  component={ApproveUsers}
                 />
               </Switch>
             </BrowserRouter>

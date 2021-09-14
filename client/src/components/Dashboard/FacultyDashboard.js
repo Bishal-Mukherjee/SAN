@@ -15,8 +15,10 @@ const FacultyDashboard = () => {
       .then((err) => console.log(err));
   };
 
-  const delPost = (postID) => {
-    deletePostActions(postID, token)
+  let postToBeDeleted;
+
+  const delPost = () => {
+    deletePostActions(postToBeDeleted, token)
       .then((data) => {
         toast.success("deleted");
         setTimeout(function () {
@@ -33,6 +35,13 @@ const FacultyDashboard = () => {
   return (
     <Fragment>
       <div>
+        {pendingPosts.length === 0 && (
+          <div className="card mt-2" style={{ border: "none" }}>
+            <h1 style={{ fontWeight: "100" }}>
+              No posts yet by you <br />
+            </h1>
+          </div>
+        )}
         {pendingPosts.map((post, i) => (
           <div className="card mt-4" style={{ backgroundColor: "#f5f5f0" }}>
             <div className="card-body card">
@@ -58,6 +67,9 @@ const FacultyDashboard = () => {
                     style={{ border: "none", background: "none" }}
                     data-toggle="modal"
                     data-target="#delete-post"
+                    onClick={() => {
+                      postToBeDeleted = post._id;
+                    }}
                   >
                     <i
                       className="fas fa-trash"
@@ -109,7 +121,7 @@ const FacultyDashboard = () => {
                             </button>
                             <button
                               className="btn btn-outline-danger mt-2"
-                              onClick={() => delPost(post._id)}
+                              onClick={() => delPost()}
                             >
                               Delete
                             </button>
@@ -197,12 +209,6 @@ const FacultyDashboard = () => {
                 <br />
                 {post.date.substring(0, 10)}
               </p>
-              {post.approval === false && (
-                <p style={{ color: "red", marginTop: "-1rem" }}>PENDING</p>
-              )}
-              {post.approval === true && (
-                <p style={{ color: "green", marginTop: "-1rem" }}>POSTED</p>
-              )}
             </div>
           </div>
         ))}

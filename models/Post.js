@@ -50,10 +50,6 @@ const postSchema = new mongoose.Schema({
       },
     },
   ],
-  approval: {
-    type: Boolean,
-    default: false,
-  },
   date: {
     type: Date,
     default: Date.now(),

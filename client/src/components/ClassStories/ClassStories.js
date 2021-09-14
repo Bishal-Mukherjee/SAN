@@ -128,7 +128,7 @@ const ClassStories = () => {
         <div>
           <button
             className="mt-2 btn btn-light"
-            onClick={() => history.push("/loc/find_posts")}
+            onClick={() => history.push("/loc/find-posts")}
           >
             Filter Posts
           </button>

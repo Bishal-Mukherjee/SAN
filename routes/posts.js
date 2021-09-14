@@ -27,9 +27,6 @@ router.post("/", auth, async (req, res) => {
       post.user = req.user.id;
       post.name = user.name;
       post.institution = user.institution;
-      if (user.designation === "HOD") {
-        post.department = user.department;
-      }
 
       if (!files.photo && !files.photos && !files.pdf) {
         post.photos = undefined;
@@ -38,6 +35,7 @@ router.post("/", auth, async (req, res) => {
             console.log(err);
           }
 
+          sendNotification(result);
           return res.status(200).json(result);
         });
       }
@@ -51,6 +49,7 @@ router.post("/", auth, async (req, res) => {
           if (err) {
             console.log(err);
           }
+          sendNotification(result);
           return res.status(200).json(result);
         });
       }
@@ -72,7 +71,7 @@ router.post("/", auth, async (req, res) => {
           if (err) {
             console.log(err);
           }
-
+          sendNotification(result);
           return res.status(200).json(result);
         });
       }
@@ -87,7 +86,7 @@ router.post("/", auth, async (req, res) => {
           if (err) {
             console.log(err);
           }
-
+          sendNotification(result);
           return res.status(200).json(result);
         });
       }
@@ -96,6 +95,30 @@ router.post("/", auth, async (req, res) => {
     return res.status(400).json("Authorization denied");
   }
 });
+
+async function sendNotification(post) {
+  const { name, institution, year, department, _id } = post;
+  const newNotification = {
+    text: `${name} has posted an assignment`,
+    post_link: _id,
+  };
+
+  const students = await User.find({
+    designation: "Student",
+    institution,
+    year,
+    department,
+  });
+
+  students.map((student) => {
+    student.notificationMessage.unshift(newNotification);
+    student.save((err, result) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  });
+}
 
 // @route GET api/posts/user_posts
 // @desc Get a particular user posts
@@ -106,7 +129,6 @@ router.get("/:user_name/posts", auth, async (req, res) => {
   const posts = await Post.find({
     user: faculty._id,
     department: user.department,
-    approval: true,
   }).sort({
     _id: -1,
   });
@@ -198,7 +220,7 @@ router.get("/pending", auth, async (req, res) => {
 router.get("/", auth, async (req, res) => {
   /* get the approved (approval: true) posts */
   try {
-    const posts = await Post.find({ approval: true }).sort({ _id: -1 });
+    const posts = await Post.find({}).sort({ _id: -1 });
     if (posts) {
       return res.status(200).json(posts);
     }

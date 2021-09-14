@@ -24,9 +24,11 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      toast("Error");
-      console.log("Password don't match");
+    if (password.length < 6 || confirmPassword.length < 6) {
+      toast.error("Password is too short!");
+      if (password !== confirmPassword) {
+        toast.error("Error! Password don't match");
+      }
     } else {
       try {
         await fetch(`${process.env.REACT_APP_SERVER_URL}/api/users`, {
@@ -38,24 +40,24 @@ const Register = () => {
           body: JSON.stringify(values),
         })
           .then((res) => res.json())
-          .then((data) => {
-            fetch(
-              `${process.env.REACT_APP_SERVER_URL}/api/users/verification-mail/${email}`,
-              {
-                headers: {
-                  Accept: "application/json",
-                  "Content-Type": "application/json",
-                },
-                method: "GET",
-              }
-            )
-              .then((res) => res.json())
-              .then((data) => {
-                toast.success("Verification email sent");
-                toast.info("Check Inbox");
-              })
-              .catch((err) => console.log(err));
-          })
+          // .then((data) => {
+          //   fetch(
+          //     `${process.env.REACT_APP_SERVER_URL}/api/users/verification-mail/${email}`,
+          //     {
+          //       headers: {
+          //         Accept: "application/json",
+          //         "Content-Type": "application/json",
+          //       },
+          //       method: "GET",
+          //     }
+          //   )
+          //     .then((res) => res.json())
+          //     .then((data) => {
+          //       toast.success("Verification email sent");
+          //       toast.info("Check Inbox");
+          //     })
+          //     .catch((err) => console.log(err));
+          // })
           .catch((err) => {
             toast.error("Registration failed");
           });

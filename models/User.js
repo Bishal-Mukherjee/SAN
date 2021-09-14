@@ -8,9 +8,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  token: {
-    type: String,
-  },
   password: {
     type: String,
     required: true,
@@ -51,6 +48,10 @@ const userSchema = new mongoose.Schema({
   ],
   otp: {
     type: Number,
+  },
+  approved: {
+    type: Boolean,
+    default: false,
   },
 });
 

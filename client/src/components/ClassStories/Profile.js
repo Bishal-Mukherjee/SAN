@@ -107,7 +107,7 @@ const Profile = () => {
               <li>{profile.institution}</li>
               <li>{profile.designation}</li>
               <li>{profile.department}</li>
-              <li>{profile.year}</li>
+              {profile.year && <li>{profile.year}</li>}
             </ul>
           </div>
         </div>
@@ -193,7 +193,7 @@ const Profile = () => {
             required
           >
             <option value=""> --Select Department-- </option>
-            <option value="Computer Science">BCA</option>
+            <option value="BCA">BCA</option>
             <option value="Computer Science">Computer Science</option>
             <option value="Commerce">Commerce</option>
             <option value="English">English</option>
