@@ -114,6 +114,25 @@ const Login = () => {
     });
   };
 
+  function viewPassword() {
+    if (
+      document.getElementById("view-password").style.visibility == "visible"
+    ) {
+      document.getElementById("view-password").style.visibility = "hidden";
+      document.getElementById("unview-password").style.visibility = "visible";
+    } else {
+      document.getElementById("view-password").style.visibility = "visible";
+      document.getElementById("unview-password").style.visibility = "hidden";
+    }
+
+    var targetInput = document.getElementById("password-input");
+    if (targetInput.type === "password") {
+      targetInput.type = "text";
+    } else {
+      targetInput.type = "password";
+    }
+  }
+
   return (
     <Fragment>
       {!token && (
@@ -207,6 +226,22 @@ const Login = () => {
                 onChange={(e) => handleChange(e)}
                 required
               />
+              <i
+                id="view-password"
+                className="fas fa-eye ml-1 fa-1x"
+                style={{ cursor: "pointer", visibility: "visible" }}
+                onClick={() => viewPassword()}
+              ></i>
+              <i
+                id="unview-password"
+                className="fas fa-eye-slash fa-1x"
+                style={{
+                  cursor: "pointer",
+                  visibility: "hidden",
+                  marginLeft: "-19px",
+                }}
+                onClick={() => viewPassword()}
+              ></i>
 
               <br />
               <br />

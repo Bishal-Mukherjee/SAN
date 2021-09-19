@@ -86,6 +86,49 @@ const Register = () => {
     }
   };
 
+  function viewPassword(options) {
+    if (
+      document.getElementById("view-password").style.visibility == "visible"
+    ) {
+      document.getElementById("view-password").style.visibility = "hidden";
+      document.getElementById("unview-password").style.visibility = "visible";
+    } else {
+      document.getElementById("view-password").style.visibility = "visible";
+      document.getElementById("unview-password").style.visibility = "hidden";
+    }
+
+    var targetInput = document.getElementById(options);
+    if (targetInput.type === "password") {
+      targetInput.type = "text";
+    } else {
+      targetInput.type = "password";
+    }
+  }
+
+  function viewConfirmPassword(options) {
+    if (
+      document.getElementById("view-confirm-password").style.visibility ==
+      "visible"
+    ) {
+      document.getElementById("view-confirm-password").style.visibility =
+        "hidden";
+      document.getElementById("unview-confirm-password").style.visibility =
+        "visible";
+    } else {
+      document.getElementById("view-confirm-password").style.visibility =
+        "visible";
+      document.getElementById("unview-confirm-password").style.visibility =
+        "hidden";
+    }
+
+    var targetInput = document.getElementById(options);
+    if (targetInput.type === "password") {
+      targetInput.type = "text";
+    } else {
+      targetInput.type = "password";
+    }
+  }
+
   return (
     <Fragment>
       {!token && (
@@ -196,6 +239,7 @@ const Register = () => {
                 outline: "none",
                 marginLeft: "0.5rem",
               }}
+              id="password-input"
               onClick={() => handleInputInputLabel("password-label")}
               placeholder="Enter your password"
               type="password"
@@ -204,6 +248,22 @@ const Register = () => {
               onChange={(e) => handleChange(e)}
               required
             />
+            <i
+              id="view-password"
+              className="fas fa-eye ml-1 fa-1x"
+              style={{ cursor: "pointer", visibility: "visible" }}
+              onClick={() => viewPassword("password-input")}
+            ></i>
+            <i
+              id="unview-password"
+              className="fas fa-eye-slash fa-1x"
+              style={{
+                cursor: "pointer",
+                visibility: "hidden",
+                marginLeft: "-19px",
+              }}
+              onClick={() => viewPassword("password-input")}
+            ></i>
             <br />
             <label
               id="confirm-password-label"
@@ -225,6 +285,7 @@ const Register = () => {
                 outline: "none",
                 marginLeft: "0.5rem",
               }}
+              id="confirm-password-input"
               onClick={() => handleInputInputLabel("confirm-password-label")}
               placeholder="Confirm your password"
               type="password"
@@ -233,6 +294,22 @@ const Register = () => {
               onChange={(e) => handleChange(e)}
               required
             />
+            <i
+              id="view-confirm-password"
+              className="fas fa-eye ml-1 fa-1x"
+              style={{ cursor: "pointer", visibility: "visible" }}
+              onClick={() => viewConfirmPassword("confirm-password-input")}
+            ></i>
+            <i
+              id="unview-confirm-password"
+              className="fas fa-eye-slash fa-1x"
+              style={{
+                cursor: "pointer",
+                visibility: "hidden",
+                marginLeft: "-19px",
+              }}
+              onClick={() => viewConfirmPassword("confirm-password-input")}
+            ></i>
             <br />
             <br />
             <button
