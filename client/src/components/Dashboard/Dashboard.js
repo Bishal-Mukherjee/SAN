@@ -124,7 +124,7 @@ const Dashboard = () => {
         <div
           id="loader"
           className="loader"
-          style={{ marginTop: "12rem", marginLeft: "7rem" }}
+          style={{ marginTop: "60%", marginLeft: "40%" }}
         ></div>
       )}
       {token && (

@@ -127,7 +127,7 @@ const ClassStories = () => {
       {posts.length === 0 && (
         <div
           className="loader"
-          style={{ marginTop: "12rem", marginLeft: "7rem" }}
+          style={{ marginTop: "50%", marginLeft: "40%" }}
         ></div>
       )}
       {token && (

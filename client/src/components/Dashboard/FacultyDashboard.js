@@ -58,7 +58,7 @@ const FacultyDashboard = () => {
           <div
             id="loader"
             className="loader mt-2"
-            style={{ marginTop: "12rem", marginLeft: "7rem" }}
+            style={{ marginTop: "50%", marginLeft: "40%" }}
           ></div>
         )}
         {pendingPosts.map((post, i) => (
