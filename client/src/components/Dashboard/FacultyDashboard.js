@@ -11,7 +11,15 @@ const FacultyDashboard = () => {
   const [pendingPosts, setPendingPosts] = useState([]);
   const getPendingPosts = () => {
     pendingPostsActions(token)
-      .then((data) => setPendingPosts(data))
+      .then((data) => {
+        setPendingPosts(data);
+        setTimeout(function makeVisible() {
+          document.getElementById("loader").style.visibility = "hidden";
+          document.getElementById("no-posts-label").style.visibility =
+            "visible";
+          document.getElementById("no-posts-label").style.height = "5rem";
+        }, 3000);
+      })
       .then((err) => console.log(err));
   };
 
@@ -36,11 +44,18 @@ const FacultyDashboard = () => {
     <Fragment>
       <div>
         {pendingPosts.length === 0 && (
-          <div className="card mt-2" style={{ border: "none" }}>
+          <div
+            id="no-posts-label"
+            className="card mt-2"
+            style={{ border: "none", visibility: "hidden", height: "0px" }}
+          >
             <h1 style={{ fontWeight: "100" }}>
               No posts yet by you <br />
             </h1>
           </div>
+        )}
+        {pendingPosts.length === 0 && (
+          <div id="loader" className="loader mt-2"></div>
         )}
         {pendingPosts.map((post, i) => (
           <div className="card mt-4" style={{ backgroundColor: "#f5f5f0" }}>

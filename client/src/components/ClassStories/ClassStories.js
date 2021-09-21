@@ -119,19 +119,23 @@ const ClassStories = () => {
 
   return (
     <Fragment>
-      {token && posts.length === 0 && (
+      {/* {token && posts.length === 0 && (
         <div className="card" style={{ border: "none" }}>
           <p style={{ fontWeight: "100", fontSize: "25px" }}>No posts yet</p>
         </div>
-      )}
+      )} */}
+      {posts.length === 0 && <div className="loader mt-2"></div>}
       {token && (
         <div>
-          <button
-            className="mt-2 btn btn-light"
-            onClick={() => history.push("/loc/find-posts")}
-          >
-            Filter Posts
-          </button>
+          {posts.length !== 0 && (
+            <button
+              className="mt-2 btn btn-light"
+              onClick={() => history.push("/loc/find-posts")}
+            >
+              Filter Posts
+            </button>
+          )}
+
           {posts.map(
             (post, i) =>
               post.institution === isAuth().institution &&

@@ -26,7 +26,17 @@ const Dashboard = () => {
       },
     })
       .then((res) => res.json())
-      .then((data) => setNotices(data))
+      .then((data) => {
+        if (data.length === 0) {
+          setTimeout(() => {
+            document.getElementById("no-notices-label").style.visibility =
+              "visible";
+            document.getElementById("no-notices-label").style.height = "4rem";
+            document.getElementById("loader").style.visibility = "hidden";
+          }, 3000);
+        }
+        setNotices(data);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -91,13 +101,26 @@ const Dashboard = () => {
 
   return (
     <Fragment>
-      {token && notices.length === 0 && (
-        <div className="card" style={{ border: "none" }}>
-          <p style={{ fontWeight: "100", fontSize: "25px" }}>
-            No notices / messages yet
-          </p>
+      {notices.length === 0 && (
+        <div
+          id="no-notices-label"
+          style={{ visibility: "hidden", height: "0px" }}
+        >
+          {token && notices.length === 0 && (
+            <div className="card" style={{ border: "none" }}>
+              <p
+                style={{
+                  fontWeight: "100",
+                  fontSize: "25px",
+                }}
+              >
+                No notices / messages yet
+              </p>
+            </div>
+          )}
         </div>
       )}
+      {notices.length === 0 && <div id="loader" className="loader mt-2"></div>}
       {token && (
         <div>
           <div>
