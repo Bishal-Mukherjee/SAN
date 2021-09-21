@@ -55,7 +55,11 @@ const FacultyDashboard = () => {
           </div>
         )}
         {pendingPosts.length === 0 && (
-          <div id="loader" className="loader mt-2"></div>
+          <div
+            id="loader"
+            className="loader mt-2"
+            style={{ marginTop: "12rem", marginLeft: "7rem" }}
+          ></div>
         )}
         {pendingPosts.map((post, i) => (
           <div className="card mt-4" style={{ backgroundColor: "#f5f5f0" }}>

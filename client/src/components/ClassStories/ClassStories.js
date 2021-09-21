@@ -124,7 +124,12 @@ const ClassStories = () => {
           <p style={{ fontWeight: "100", fontSize: "25px" }}>No posts yet</p>
         </div>
       )} */}
-      {posts.length === 0 && <div className="loader mt-2"></div>}
+      {posts.length === 0 && (
+        <div
+          className="loader"
+          style={{ marginTop: "12rem", marginLeft: "7rem" }}
+        ></div>
+      )}
       {token && (
         <div>
           {posts.length !== 0 && (

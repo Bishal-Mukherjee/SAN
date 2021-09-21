@@ -120,7 +120,13 @@ const Dashboard = () => {
           )}
         </div>
       )}
-      {notices.length === 0 && <div id="loader" className="loader mt-2"></div>}
+      {notices.length === 0 && (
+        <div
+          id="loader"
+          className="loader"
+          style={{ marginTop: "12rem", marginLeft: "7rem" }}
+        ></div>
+      )}
       {token && (
         <div>
           <div>
