@@ -13,12 +13,14 @@ const FacultyDashboard = () => {
     pendingPostsActions(token)
       .then((data) => {
         setPendingPosts(data);
-        setTimeout(function makeVisible() {
-          document.getElementById("loader").style.visibility = "hidden";
-          document.getElementById("no-posts-label").style.visibility =
-            "visible";
-          document.getElementById("no-posts-label").style.height = "5rem";
-        }, 3000);
+        document.getElementById("loader").style.visibility = "hidden";
+        document.getElementById("loader").style.marginTop = "0px";
+        document.getElementById("loader").style.marginLeft = "0px";
+        if (data.length !== 0) {
+          document.getElementById("no-posts-message").style.visibility =
+            "hidden";
+        }
+        document.getElementById("no-posts-message").style.marginTop = "0px";
       })
       .then((err) => console.log(err));
   };
@@ -43,27 +45,31 @@ const FacultyDashboard = () => {
   return (
     <Fragment>
       <div>
-        {pendingPosts.length === 0 && (
-          <div
-            id="no-posts-label"
-            className="card mt-2"
-            style={{ border: "none", visibility: "hidden", height: "0px" }}
-          >
-            <h1 style={{ fontWeight: "100" }}>
-              No posts yet by you <br />
-            </h1>
-          </div>
-        )}
-        {pendingPosts.length === 0 && (
-          <div
-            id="loader"
-            className="loader mt-2"
-            style={{ marginTop: "50%", marginLeft: "40%" }}
-          ></div>
-        )}
+        <div
+          id="no-posts-message"
+          className="card"
+          style={{ border: "none", height: "0px" }}
+        >
+          <h1 style={{ fontWeight: "100" }}>
+            No posts yet by you <br />
+          </h1>
+        </div>
+
+        <div
+          id="loader"
+          className="loader"
+          style={{
+            marginTop: "50%",
+            marginLeft: "40%",
+            visibility: "visible",
+          }}
+        ></div>
         {pendingPosts.map((post, i) => (
-          <div className="card mt-4" style={{ backgroundColor: "#f5f5f0" }}>
-            <div className="card-body card">
+          <div className="card class-stories-card mt-3">
+            <div
+              className="card-body card"
+              style={{ backgroundColor: "#f5f5f0" }}
+            >
               <img
                 src={userImage}
                 style={{
@@ -156,10 +162,7 @@ const FacultyDashboard = () => {
 
               {!post.photo && !post.pdfdocument && post.photos.length === 0 && (
                 <div className="card">
-                  <div
-                    className="card-body"
-                    style={{ backgroundColor: "#f5f5f0" }}
-                  >
+                  <div className="card-body">
                     <p className="text-center mt-3">{post.text}</p>
                   </div>
                 </div>
@@ -168,6 +171,7 @@ const FacultyDashboard = () => {
               {post.photo && (
                 <div className="card">
                   <img
+                    className="mt-1"
                     style={{
                       width: "15rem",
                       height: "15rem",

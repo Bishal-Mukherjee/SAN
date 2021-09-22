@@ -316,7 +316,7 @@ const Dashboard = () => {
           {notices.map((notice, i) => (
             <div
               key={i}
-              className="card mb-2"
+              className="card mb-3 class-stories-card"
               style={{ backgroundColor: "#f2f2f2" }}
             >
               <p

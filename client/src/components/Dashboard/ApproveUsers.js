@@ -73,7 +73,7 @@ const ApproveUsers = () => {
   return (
     <div>
       {pendingusers.map((user, i) => (
-        <div className="card mt-3" key={i}>
+        <div className="card mt-3 class-stories-card" key={i}>
           {user.approved == true && (
             <div style={{ alignSelf: "flex-end" }}>
               <i

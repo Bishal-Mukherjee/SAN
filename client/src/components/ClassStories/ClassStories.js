@@ -147,10 +147,13 @@ const ClassStories = () => {
               post.department === isAuth().department && (
                 <div
                   key={i}
-                  className="card mt-2"
+                  className="card mt-3 class-stories-card"
                   style={{ backgroundColor: "#f5f5f0" }}
                 >
-                  <div className="card-body card">
+                  <div
+                    className="card-body card"
+                    style={{ backgroundColor: "#f5f5f0", border: "none" }}
+                  >
                     <img
                       src={userImage}
                       style={{
@@ -246,7 +249,7 @@ const ClassStories = () => {
                           <div
                             className="card"
                             style={{
-                              border: "none",
+                              borderWidth: "2px",
                               marginBottom: "",
                             }}
                           >
@@ -359,13 +362,14 @@ const ClassStories = () => {
                       )}
 
                     {post.photo && (
-                      <div className="card">
+                      <div className="card" style={{ borderWidth: "2px" }}>
                         <img
                           style={{
                             width: "15rem",
                             height: "15rem",
                             alignSelf: "center",
                           }}
+                          className="mt-1"
                           src={`${process.env.REACT_APP_SERVER_URL}/api/posts/view_photo/${post._id}`}
                         />
                         <p className="text-center">{post.text}</p>
@@ -469,7 +473,7 @@ const ClassStories = () => {
                     )}
 
                     {post.pdfdocument && (
-                      <div className="card">
+                      <div className="card" style={{ borderWidth: "2px" }}>
                         <a
                           className="btn mt-2"
                           href={`${process.env.REACT_APP_SERVER_URL}/api/posts/view-pdf/${post._id}`}
@@ -583,7 +587,7 @@ const ClassStories = () => {
                     )}
 
                     {post.photos.length !== 0 && (
-                      <div className="card">
+                      <div className="card" style={{ borderWidth: "2px" }}>
                         <img
                           style={{
                             width: "15rem",
