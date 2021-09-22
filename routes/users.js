@@ -90,6 +90,17 @@ router.post("/", async (req, res) => {
   });
 });
 
+// @route GET api/users/generate-random-password
+// @desc to generate random password
+// @access Public
+router.get("/generate-random-password", (req, res) => {
+  const generatedPassword = randomstring.generate({
+    length: 6,
+    charset: "alphabetic",
+  });
+  return res.status(200).json(generatedPassword);
+});
+
 // @route GET api/users/faculty_members
 // @desc get all the 'Faculty' profiles
 // @access Public

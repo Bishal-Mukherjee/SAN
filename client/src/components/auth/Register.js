@@ -13,10 +13,24 @@ const Register = () => {
     confirmPassword: "",
   });
 
+  const [randomPassword, setRandomPassword] = useState({});
+
   const history = useHistory();
   const token = localStorage.getItem("token");
 
   const { name, email, password, confirmPassword } = values;
+
+  const handlePasswordGeneration = () => {
+    fetch(
+      `${process.env.REACT_APP_SERVER_URL}/api/users/generate-random-password`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setRandomPassword(data);
+        document.getElementById("copy-random-password").style.visibility =
+          "visible";
+      });
+  };
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -128,6 +142,11 @@ const Register = () => {
       targetInput.type = "password";
     }
   }
+
+  const handleCopyGeneratedPassword = () => {
+    document.getElementById("copy-random-password").textContent = "Copied";
+    navigator.clipboard.writeText(randomPassword);
+  };
 
   return (
     <Fragment>
@@ -265,12 +284,30 @@ const Register = () => {
               onClick={() => viewPassword("password-input")}
             ></i>
             <br />
+            <div className="mt-1">
+              <a
+                id="copy-random-password"
+                className="btn btn-light"
+                style={{ marginLeft: "34%", visibility: "hidden" }}
+                onClick={() => handleCopyGeneratedPassword()}
+              >
+                <span style={{ fontSize: "12px" }}>Copy</span>
+              </a>
+              <a
+                className="btn btn-light ml-2"
+                onClick={() => handlePasswordGeneration()}
+              >
+                <span style={{ fontSize: "11px", borderColor: "blue" }}>
+                  Generate Password
+                </span>
+              </a>
+            </div>
             <label
               id="confirm-password-label"
               style={{
                 fontWeight: "100",
-                marginTop: "1rem",
                 marginBottom: "6px",
+                marginTop: "-1rem",
               }}
             >
               Confirm Password
