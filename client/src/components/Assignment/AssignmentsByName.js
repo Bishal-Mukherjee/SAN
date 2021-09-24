@@ -89,7 +89,6 @@ const AssignmentsByName = () => {
             {faculty.map((f) => (
               <option value={`${f}`}>{`${f}`}</option>
             ))}
-            
           </select>
           <button
             id="find-button"
@@ -119,7 +118,7 @@ const AssignmentsByName = () => {
                 post.department === isAuth().department && (
                   <div
                     key={i}
-                    className="card mt-2"
+                    className="card mt-2 class-stories-card"
                     style={{ backgroundColor: "#f5f5f0" }}
                   >
                     <div className="card-body card">
@@ -350,6 +349,7 @@ const AssignmentsByName = () => {
                               height: "15rem",
                               alignSelf: "center",
                             }}
+                            className="mt-2"
                             src={`${process.env.REACT_APP_SERVER_URL}/api/posts/view_photo/${post._id}`}
                           />
                           <p className="text-center">{post.text}</p>
@@ -579,8 +579,8 @@ const AssignmentsByName = () => {
                               width: "15rem",
                               height: "15rem",
                               alignSelf: "center",
-                              marginTop: "1rem",
                             }}
+                            className="mt-2"
                             src={`${
                               process.env.REACT_APP_SERVER_URL
                             }/api/posts/get-images/${post._id}/${1}`}

@@ -84,16 +84,17 @@ const Login = () => {
   const handleForgotPasswordEmail = (e) => {
     setUserEmail({ ...userEmail, [e.target.name]: e.target.value });
   };
-  const disableAll = () => {
+
+  /*const disableAll = () => {
     document.getElementById("email-label").style.fontWeight = "100";
     document.getElementById("email-label").style.marginTop = "1rem";
     document.getElementById("password-label").style.fontWeight = "100";
     document.getElementById("password-label").style.marginTop = "1rem";
-  };
+  };*/
 
   const handleInputInputLabel = (elementID) => {
     if (document.getElementById(`${elementID}`)) {
-      disableAll();
+      //disableAll();
       document.getElementById(`${elementID}`).style.fontWeight = "600";
       document.getElementById(`${elementID}`).style.marginTop = "0.5rem";
     }
@@ -132,6 +133,25 @@ const Login = () => {
       targetInput.type = "password";
     }
   }
+
+  window.onclick = function (event) {
+    if (event.target.id !== "email-input") {
+      if (document.getElementById("email-label").style.fontWeight === "600") {
+        document.getElementById("email-label").style.fontWeight = "100";
+        document.getElementById("email-label").style.marginTop = "1rem";
+      }
+    }
+    if (
+      event.target.id !== "password-input" &&
+      event.target.id !== "view-password" &&
+      event.target.id !== "unview-password"
+    ) {
+      if (document.getElementById("password-label").style.fontWeight === "600") {
+        document.getElementById("password-label").style.fontWeight = "100";
+        document.getElementById("password-label").style.marginTop = "1rem";
+      }
+    }
+  };
 
   return (
     <Fragment>
@@ -180,6 +200,7 @@ const Login = () => {
               </label>
               <br />
               <input
+                id="email-input"
                 style={{
                   width: "18rem",
                   borderRadius: "5px",

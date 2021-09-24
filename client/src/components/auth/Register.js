@@ -81,7 +81,7 @@ const Register = () => {
     }
   };
 
-  const disableAll = () => {
+  /*const disableAll = () => {
     document.getElementById("name-label").style.fontWeight = "100";
     document.getElementById("name-label").style.marginTop = "1rem";
     document.getElementById("email-label").style.fontWeight = "100";
@@ -90,11 +90,11 @@ const Register = () => {
     document.getElementById("password-label").style.marginTop = "1rem";
     document.getElementById("confirm-password-label").style.fontWeight = "100";
     document.getElementById("confirm-password-label").style.marginTop = "1rem";
-  };
+  };*/
 
   const handleInputInputLabel = (elementID) => {
     if (document.getElementById(`${elementID}`)) {
-      disableAll();
+      // disableAll();
       document.getElementById(`${elementID}`).style.fontWeight = "600";
       document.getElementById(`${elementID}`).style.marginTop = "0.5rem";
     }
@@ -102,7 +102,7 @@ const Register = () => {
 
   function viewPassword(options) {
     if (
-      document.getElementById("view-password").style.visibility == "visible"
+      document.getElementById("view-password").style.visibility === "visible"
     ) {
       document.getElementById("view-password").style.visibility = "hidden";
       document.getElementById("unview-password").style.visibility = "visible";
@@ -121,7 +121,7 @@ const Register = () => {
 
   function viewConfirmPassword(options) {
     if (
-      document.getElementById("view-confirm-password").style.visibility ==
+      document.getElementById("view-confirm-password").style.visibility ===
       "visible"
     ) {
       document.getElementById("view-confirm-password").style.visibility =
@@ -146,6 +146,48 @@ const Register = () => {
   const handleCopyGeneratedPassword = () => {
     document.getElementById("copy-random-password").textContent = "Copied";
     navigator.clipboard.writeText(randomPassword);
+  };
+
+  window.onclick = function (event) {
+    if (event.target.id !== "name-input") {
+      if (document.getElementById("name-label").style.fontWeight === "600") {
+        document.getElementById("name-label").style.fontWeight = "100";
+        document.getElementById("name-label").style.marginTop = "1rem";
+      }
+    }
+    if (event.target.id !== "email-input") {
+      if (document.getElementById("email-label").style.fontWeight === "600") {
+        document.getElementById("email-label").style.fontWeight = "100";
+        document.getElementById("email-label").style.marginTop = "1rem";
+      }
+    }
+
+    if (
+      event.target.id !== "password-input" &&
+      event.target.id !== "view-password" &&
+      event.target.id !== "unview-password"
+    ) {
+      if (document.getElementById("password-label").style.fontWeight === "600") {
+        document.getElementById("password-label").style.fontWeight = "100";
+        document.getElementById("password-label").style.marginTop = "1rem";
+      }
+    }
+
+    if (
+      event.target.id !== "confirm-password-input" &&
+      event.target.id !== "view-password" &&
+      event.target.id !== "unview-password"
+    ) {
+      if (
+        document.getElementById("confirm-password-label").style.fontWeight ===
+        "600"
+      ) {
+        document.getElementById("confirm-password-label").style.fontWeight =
+          "100";
+        document.getElementById("confirm-password-label").style.marginTop =
+          "1rem";
+      }
+    }
   };
 
   return (
@@ -192,6 +234,7 @@ const Register = () => {
             </label>
             <br />
             <input
+              id="name-input"
               style={{
                 width: "18rem",
                 borderRadius: "5px",
@@ -221,6 +264,7 @@ const Register = () => {
             </label>
             <br />
             <input
+              id="email-input"
               style={{
                 width: "18rem",
                 borderRadius: "5px",
