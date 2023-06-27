@@ -59,8 +59,7 @@ const FacultyDashboard = () => {
           id="loader"
           className="loader"
           style={{
-            marginTop: "50%",
-            marginLeft: "40%",
+            marginTop: "3rem",
             visibility: "visible",
           }}
         ></div>

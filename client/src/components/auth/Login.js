@@ -136,7 +136,7 @@ const Login = () => {
 
   window.onclick = function (event) {
     if (event.target.id !== "email-input") {
-      if (document.getElementById("email-label").style.fontWeight === "600") {
+      if (document.getElementById("email-label")?.style.fontWeight === "600") {
         document.getElementById("email-label").style.fontWeight = "100";
         document.getElementById("email-label").style.marginTop = "1rem";
       }
@@ -146,7 +146,9 @@ const Login = () => {
       event.target.id !== "view-password" &&
       event.target.id !== "unview-password"
     ) {
-      if (document.getElementById("password-label").style.fontWeight === "600") {
+      if (
+        document.getElementById("password-label")?.style.fontWeight === "600"
+      ) {
         document.getElementById("password-label").style.fontWeight = "100";
         document.getElementById("password-label").style.marginTop = "1rem";
       }

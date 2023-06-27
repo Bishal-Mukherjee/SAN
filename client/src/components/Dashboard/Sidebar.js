@@ -390,11 +390,11 @@ const Sidebar = () => {
                   path="/loc/find-posts"
                   component={AssignmentsByName}
                 />
-                <Route
+                {/* <Route
                   exact
                   path="/loc/approve-users"
                   component={ApproveUsers}
-                />
+                /> */}
               </Switch>
             </BrowserRouter>
           </div>

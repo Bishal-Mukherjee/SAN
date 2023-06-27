@@ -77,11 +77,10 @@ const CreateNotice = () => {
             <textarea
               name="salutation"
               value={salutation}
-              style={{ marginTop: "5px" }}
+              style={{ marginTop: "5px", outline: "none" }}
               cols="35"
               rows="2"
               onChange={(e) => handleChange(e)}
-              style={{ outline: "none" }}
               required
             />
             <br />

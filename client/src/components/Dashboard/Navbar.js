@@ -44,11 +44,11 @@ const Navbar = () => {
 
   return (
     <nav
-      className="navbar navbar-expand-lg navbar-light"
+      className="navbar navbar-light"
       style={{
         backgroundColor: "#1a8cff",
-        height: "3.3rem",
-        marginRight: "-50px",
+        height: "3.5rem",
+        width: "100%",
       }}
     >
       <p
@@ -105,7 +105,7 @@ const Navbar = () => {
               ></p>
               <div className="modal-body card" style={{ borderColor: "white" }}>
                 <div>
-                  {notification.length === 0 && (
+                  {notification?.length === 0 && (
                     <p
                       className="text-center"
                       style={{ fontWeight: "100", fontSize: "25px" }}
@@ -113,7 +113,7 @@ const Navbar = () => {
                       No notifications yet
                     </p>
                   )}
-                  {notification.map((message) => (
+                  {notification?.map((message) => (
                     <div className="card mt-2 rounded">
                       <a
                         href={`/loc/${message.post_link}/view`}
@@ -153,7 +153,7 @@ const Navbar = () => {
             <div className="modal-content card">
               <div className="modal-body card" style={{ borderColor: "white" }}>
                 <div>
-                  {notification.length === 0 && (
+                  {notification?.length === 0 && (
                     <p
                       className="text-center"
                       style={{ fontWeight: "100", fontSize: "25px" }}
@@ -161,7 +161,7 @@ const Navbar = () => {
                       No notifications yet
                     </p>
                   )}
-                  {notification.map((message) => (
+                  {notification?.map((message) => (
                     <div className="card mt-1 rounded">
                       <a
                         href={`/loc/${message.post_link}/view`}

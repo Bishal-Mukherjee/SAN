@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { isAuth, isToken } from "../../actions/auth";
 import { deletePostActions } from "../../actions/posts/deleteposts";
+import { getFacultyMembersActions } from "../../actions/users/facultymembers";
 import userImage from "../../assets/userImage.png";
 require("dotenv").config();
 
@@ -14,10 +15,68 @@ const ClassStories = () => {
   const [values, setValues] = useState({
     text: "",
   });
+  const [faculty, setFaculty] = useState([]);
+  const [facultyName, setFacultyName] = useState({
+    fName: "",
+  });
 
   const { text } = values;
+  const { fName } = facultyName;
 
   let postToBeDeleted;
+  let filterdPosts = [];
+
+  /* for handling doubts field changes */
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  /* handle doubts submission */
+  const handleSubmit = async (e, postID) => {
+    e.preventDefault();
+    await fetch(
+      `${process.env.REACT_APP_SERVER_URL}/api/posts/${postID}/write-doubts`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "auth-token": `${token}`,
+        },
+        method: "PUT",
+        body: JSON.stringify({ text }),
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        toast.success("doubt added");
+        getStories();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  /* get faultys' name for dropdowns */
+  const getFacultyNames = () => {
+    getFacultyMembersActions().then((res) => {
+      setFaculty(res);
+    });
+  };
+
+  const handleFacultyNameChange = (e) => {
+    setFacultyName({ ...facultyName, [e.target.name]: e.target.value });
+  };
+
+  const handleFacultyNameSubmit = (e) => {
+    e.preventDefault();
+    if (fName !== "") {
+      posts.map((p) => {
+        if (p.name == fName) {
+          filterdPosts.push(p);
+        }
+      });
+      if (filterdPosts.length !== 0) setPosts(filterdPosts);
+      else setPosts([]);
+    } else getStories();
+  };
 
   const getStories = async () => {
     await fetch(`${process.env.REACT_APP_SERVER_URL}/api/posts`, {
@@ -87,641 +146,648 @@ const ClassStories = () => {
   //   }
   // };
 
-  const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e, postID) => {
-    e.preventDefault();
-    await fetch(
-      `${process.env.REACT_APP_SERVER_URL}/api/posts/${postID}/write-doubts`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "auth-token": `${token}`,
-        },
-        method: "PUT",
-        body: JSON.stringify({ text }),
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        toast.success("doubt added");
-        getStories();
-      })
-      .catch((err) => console.log(err));
-  };
-
   useEffect(() => {
     getStories();
+    getFacultyNames();
   }, []);
 
   return (
     <Fragment>
-      {/* {token && posts.length === 0 && (
-        <div className="card" style={{ border: "none" }}>
-          <p style={{ fontWeight: "100", fontSize: "25px" }}>No posts yet</p>
-        </div>
-      )} */}
-      {posts.length === 0 && (
-        <div
-          className="loader"
-          style={{ marginTop: "50%", marginLeft: "40%" }}
-        ></div>
+      {posts.length === 0 && fName === "" && (
+        <div className="loader" style={{ marginTop: "3rem" }}></div>
       )}
+
       {token && (
         <div>
           {posts.length !== 0 && (
-            <button
-              className="mt-2 btn btn-light"
-              onClick={() => history.push("/loc/find-posts")}
-            >
-              Filter Posts
-            </button>
+            <form className="mt-3" onSubmit={(e) => handleFacultyNameSubmit(e)}>
+              <select
+                style={{ height: "2rem", width: "15rem", outline: "none" }}
+                onChange={(e) => handleFacultyNameChange(e)}
+                name="fName"
+              >
+                <option value="">--Select Faculty--</option>
+                {faculty.map((f) => (
+                  <option value={f}>{f}</option>
+                ))}
+              </select>
+              <button className="ml-2 find-button" type="submit">
+                <i className="fas fa-search"></i>
+              </button>
+            </form>
           )}
 
-          {posts.map(
-            (post, i) =>
-              post.institution === isAuth().institution &&
-              post.department === isAuth().department && (
-                <div
-                  key={i}
-                  className="card mt-3 class-stories-card"
-                  style={{ backgroundColor: "#f5f5f0" }}
-                >
+          {posts.length === 0 && (
+            <div style={{ marginTop: "1rem" }}>
+              <p style={{ fontSize: "30px", fontWeight: "100" }}>
+                No posts found
+              </p>
+            </div>
+          )}
+
+          {posts.length !== 0 &&
+            posts.map(
+              (post, i) =>
+                post.institution === isAuth().institution &&
+                post.department === isAuth().department && (
                   <div
-                    className="card-body card"
-                    style={{ backgroundColor: "#f5f5f0", border: "none" }}
+                    key={i}
+                    className="card mt-3 class-stories-card"
+                    style={{ backgroundColor: "#f5f5f0" }}
                   >
-                    <img
-                      src={userImage}
-                      style={{
-                        width: "2rem",
-                        borderRadius: "1rem",
-                        marginLeft: "1rem",
-                      }}
-                    />
-                    {(post.user === isAuth()._id ||
-                      isAuth().designation === "Admin") && (
-                      <div
+                    <div
+                      className="card-body card"
+                      style={{ backgroundColor: "#f5f5f0", border: "none" }}
+                    >
+                      <img
+                        src={userImage}
                         style={{
-                          background: "none",
-                          alignSelf: "flex-end",
-                          border: "none",
-                          marginTop: "-1.5rem",
+                          width: "2rem",
+                          borderRadius: "1rem",
+                          marginLeft: "1rem",
                         }}
-                      >
-                        <button
-                          style={{ border: "none", background: "none" }}
-                          data-toggle="modal"
-                          data-target="#delete-post"
-                          onClick={() => (postToBeDeleted = post._id)}
-                        >
-                          <i
-                            className="fas fa-trash"
-                            style={{
-                              color: "red",
-                            }}
-                          ></i>
-                        </button>
+                      />
+                      {(post.user === isAuth()._id ||
+                        isAuth().designation === "Admin") && (
                         <div
-                          className="modal fade"
-                          id="delete-post"
-                          tabindex="-1"
-                          role="dialog"
-                          aria-labelledby="exampleModalLabel"
-                          aria-hidden="true"
+                          style={{
+                            background: "none",
+                            alignSelf: "flex-end",
+                            border: "none",
+                            marginTop: "-1.5rem",
+                          }}
                         >
-                          <div
-                            className="modal-dialog"
-                            role="document"
-                            style={{ width: "23rem" }}
+                          <button
+                            style={{ border: "none", background: "none" }}
+                            data-toggle="modal"
+                            data-target="#delete-post"
+                            onClick={() => (postToBeDeleted = post._id)}
                           >
-                            <div className="modal-content card">
-                              <p
-                                style={{
-                                  alignSelf: "center",
-                                  fontSize: "25px",
-                                  marginTop: "1rem",
-                                }}
-                              ></p>
-                              <div
-                                className="modal-body card"
-                                style={{ borderColor: "white" }}
-                              >
+                            <i
+                              className="fas fa-trash"
+                              style={{
+                                color: "red",
+                              }}
+                            ></i>
+                          </button>
+                          <div
+                            className="modal fade"
+                            id="delete-post"
+                            tabindex="-1"
+                            role="dialog"
+                            aria-labelledby="exampleModalLabel"
+                            aria-hidden="true"
+                          >
+                            <div
+                              className="modal-dialog"
+                              role="document"
+                              style={{ width: "23rem" }}
+                            >
+                              <div className="modal-content card">
                                 <p
                                   style={{
                                     alignSelf: "center",
-                                    fontSize: "30px",
-                                    marginTop: "-2rem",
+                                    fontSize: "25px",
+                                    marginTop: "1rem",
                                   }}
+                                ></p>
+                                <div
+                                  className="modal-body card"
+                                  style={{ borderColor: "white" }}
                                 >
-                                  Sure to delete?
-                                </p>
-                                <div style={{ alignSelf: "center" }}>
-                                  <button
-                                    data-dismiss="modal"
-                                    className="btn btn-outline-secondary mt-2 mr-3"
+                                  <p
+                                    style={{
+                                      alignSelf: "center",
+                                      fontSize: "30px",
+                                      marginTop: "-2rem",
+                                    }}
                                   >
-                                    Cancel
-                                  </button>
-                                  <button
-                                    className="btn btn-outline-danger mt-2"
-                                    onClick={() => deletePost(postToBeDeleted)}
-                                  >
-                                    Delete
-                                  </button>
+                                    Sure to delete?
+                                  </p>
+                                  <div style={{ alignSelf: "center" }}>
+                                    <button
+                                      data-dismiss="modal"
+                                      className="btn btn-outline-secondary mt-2 mr-3"
+                                    >
+                                      Cancel
+                                    </button>
+                                    <button
+                                      className="btn btn-outline-danger mt-2"
+                                      onClick={() =>
+                                        deletePost(postToBeDeleted)
+                                      }
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
-                    <p className="ml-2">{post.name}</p>
+                      <p className="ml-2">{post.name}</p>
 
-                    {!post.photo &&
-                      !post.pdfdocument &&
-                      post.photos.length === 0 && (
-                        <div>
-                          <div
-                            className="card"
-                            style={{
-                              borderWidth: "2px",
-                              marginBottom: "",
-                            }}
-                          >
-                            <p className="text-center mt-3">{post.text}</p>
+                      {!post.photo &&
+                        !post.pdfdocument &&
+                        post.photos.length === 0 && (
+                          <div>
                             <div
-                              className="mt-5"
+                              className="card"
                               style={{
-                                alignSelf: "center",
-                                backgroundColor: "#f5f5f0",
+                                borderWidth: "2px",
+                                marginBottom: "",
                               }}
                             >
-                              <button
+                              <p className="text-center mt-3">{post.text}</p>
+                              <div
+                                className="mt-5"
                                 style={{
-                                  backgroundColor: "#f5f5f0",
-                                  border: "none",
-                                }}
-                                onClick={() => {
-                                  history.push(`/loc/doubts/${post._id}`);
-                                }}
-                              >
-                                <i className="fas fa-comments fa-lg"></i>
-                                Doubts {post.doubts.length}
-                              </button>
-                              <button
-                                className="ml-4"
-                                style={{
-                                  border: "none",
+                                  alignSelf: "center",
                                   backgroundColor: "#f5f5f0",
                                 }}
-                                onClick={() => {
-                                  handleDoubtsDropdown(post._id);
-                                }}
                               >
-                                <i className="fas fa-pen-square fa-lg"></i> Ask
-                                doubt
-                              </button>
+                                <button
+                                  style={{
+                                    backgroundColor: "#f5f5f0",
+                                    border: "none",
+                                  }}
+                                  onClick={() => {
+                                    history.push(`/loc/doubts/${post._id}`);
+                                  }}
+                                >
+                                  <i className="fas fa-comments fa-lg"></i>
+                                  Doubts {post.doubts.length}
+                                </button>
+                                <button
+                                  className="ml-4"
+                                  style={{
+                                    border: "none",
+                                    backgroundColor: "#f5f5f0",
+                                  }}
+                                  onClick={() => {
+                                    handleDoubtsDropdown(post._id);
+                                  }}
+                                >
+                                  <i className="fas fa-pen-square fa-lg"></i>{" "}
+                                  Ask doubt
+                                </button>
+                              </div>
+
+                              {window.innerWidth <= 500 &&
+                                window.innerWidth < 600 && (
+                                  <div
+                                    id={`${post._id}`}
+                                    style={{
+                                      visibility: "hidden",
+                                      height: "0",
+                                    }}
+                                  >
+                                    <form
+                                      onSubmit={(e) =>
+                                        handleSubmit(e, post._id)
+                                      }
+                                    >
+                                      <input
+                                        name="text"
+                                        value={text}
+                                        onChange={(e) => handleChange(e)}
+                                        placeholder="Write your doubts.."
+                                        style={{
+                                          outline: "none",
+                                          width: "82%",
+                                          borderRadius: "1rem",
+                                          borderWidth: "0.1rem",
+                                        }}
+                                        required
+                                      />
+                                      <button
+                                        type="submit"
+                                        style={{
+                                          backgroundColor: "white",
+                                          border: "none",
+                                        }}
+                                      >
+                                        <i className="fas fa-paper-plane"></i>
+                                      </button>
+                                    </form>
+                                  </div>
+                                )}
+
+                              {window.innerWidth >= 600 &&
+                                window.innerWidth >= 1048 && (
+                                  <div
+                                    id={`${post._id}`}
+                                    style={{
+                                      visibility: "hidden",
+                                      height: "0",
+                                    }}
+                                  >
+                                    <form
+                                      onSubmit={(e) =>
+                                        handleSubmit(e, post._id)
+                                      }
+                                    >
+                                      <input
+                                        name="text"
+                                        value={text}
+                                        onChange={(e) => handleChange(e)}
+                                        placeholder="Write your doubts.."
+                                        style={{
+                                          outline: "none",
+                                          width: "96%",
+                                          marginLeft: "1rem",
+                                          borderRadius: "1rem",
+                                        }}
+                                        required
+                                      />
+                                      <button
+                                        type="submit"
+                                        style={{
+                                          backgroundColor: "white",
+                                          border: "none",
+                                        }}
+                                      >
+                                        <i className="fas fa-paper-plane"></i>
+                                      </button>
+                                    </form>
+                                  </div>
+                                )}
                             </div>
-
-                            {window.innerWidth <= 500 &&
-                              window.innerWidth < 600 && (
-                                <div
-                                  id={`${post._id}`}
-                                  style={{ visibility: "hidden", height: "0" }}
-                                >
-                                  <form
-                                    onSubmit={(e) => handleSubmit(e, post._id)}
-                                  >
-                                    <input
-                                      name="text"
-                                      value={text}
-                                      onChange={(e) => handleChange(e)}
-                                      placeholder="Write your doubts.."
-                                      style={{
-                                        outline: "none",
-                                        width: "82%",
-                                        borderRadius: "1rem",
-                                        borderWidth: "0.1rem",
-                                      }}
-                                      required
-                                    />
-                                    <button
-                                      type="submit"
-                                      style={{
-                                        backgroundColor: "white",
-                                        border: "none",
-                                      }}
-                                    >
-                                      <i className="fas fa-paper-plane"></i>
-                                    </button>
-                                  </form>
-                                </div>
-                              )}
-
-                            {window.innerWidth >= 600 &&
-                              window.innerWidth >= 1048 && (
-                                <div
-                                  id={`${post._id}`}
-                                  style={{ visibility: "hidden", height: "0" }}
-                                >
-                                  <form
-                                    onSubmit={(e) => handleSubmit(e, post._id)}
-                                  >
-                                    <input
-                                      name="text"
-                                      value={text}
-                                      onChange={(e) => handleChange(e)}
-                                      placeholder="Write your doubts.."
-                                      style={{
-                                        outline: "none",
-                                        width: "96%",
-                                        marginLeft: "1rem",
-                                        borderRadius: "1rem",
-                                      }}
-                                      required
-                                    />
-                                    <button
-                                      type="submit"
-                                      style={{
-                                        backgroundColor: "white",
-                                        border: "none",
-                                      }}
-                                    >
-                                      <i className="fas fa-paper-plane"></i>
-                                    </button>
-                                  </form>
-                                </div>
-                              )}
                           </div>
+                        )}
+
+                      {post.photo && (
+                        <div className="card" style={{ borderWidth: "2px" }}>
+                          <img
+                            style={{
+                              width: "15rem",
+                              height: "15rem",
+                              alignSelf: "center",
+                            }}
+                            className="mt-1"
+                            src={`${process.env.REACT_APP_SERVER_URL}/api/posts/view_photo/${post._id}`}
+                          />
+                          <p className="text-center">{post.text}</p>
+
+                          <div
+                            style={{
+                              alignSelf: "center",
+                              backgroundColor: "#f5f5f0",
+                            }}
+                          >
+                            <button
+                              style={{
+                                backgroundColor: "#f5f5f0",
+                                border: "none",
+                              }}
+                              onClick={() => {
+                                history.push(`/loc/doubts/${post._id}`);
+                              }}
+                            >
+                              <i className="fas fa-comments fa-lg"></i>
+                              Doubts {post.doubts.length}
+                            </button>
+                            <button
+                              className="ml-4"
+                              style={{
+                                border: "none",
+                                backgroundColor: "#f5f5f0",
+                              }}
+                              onClick={() => {
+                                handleDoubtsDropdown(post._id);
+                              }}
+                            >
+                              <i className="fas fa-pen-square fa-lg"></i> Ask
+                              doubt
+                            </button>
+                          </div>
+
+                          {window.innerWidth <= 500 && window.innerWidth < 600 && (
+                            <div
+                              id={`${post._id}`}
+                              style={{ visibility: "hidden", height: "0" }}
+                            >
+                              <form onSubmit={(e) => handleSubmit(e, post._id)}>
+                                <input
+                                  name="text"
+                                  value={text}
+                                  onChange={(e) => handleChange(e)}
+                                  placeholder="Write your doubts.."
+                                  style={{
+                                    outline: "none",
+                                    width: "82%",
+                                    borderRadius: "1rem",
+                                  }}
+                                  required
+                                />
+                                <button
+                                  type="submit"
+                                  style={{
+                                    backgroundColor: "white",
+                                    border: "none",
+                                  }}
+                                >
+                                  <i className="fas fa-paper-plane"></i>
+                                </button>
+                              </form>
+                            </div>
+                          )}
+
+                          {window.innerWidth >= 600 &&
+                            window.innerWidth >= 1048 && (
+                              <div
+                                id={`${post._id}`}
+                                style={{ visibility: "hidden", height: "0" }}
+                              >
+                                <form
+                                  onSubmit={(e) => handleSubmit(e, post._id)}
+                                >
+                                  <input
+                                    name="text"
+                                    value={text}
+                                    onChange={(e) => handleChange(e)}
+                                    placeholder="Write your doubts.."
+                                    style={{
+                                      outline: "none",
+                                      width: "96%",
+                                      marginLeft: "1rem",
+                                      borderRadius: "1rem",
+                                    }}
+                                    required
+                                  />
+                                  <button
+                                    type="submit"
+                                    style={{
+                                      backgroundColor: "white",
+                                      border: "none",
+                                    }}
+                                  >
+                                    <i className="fas fa-paper-plane"></i>
+                                  </button>
+                                </form>
+                              </div>
+                            )}
                         </div>
                       )}
 
-                    {post.photo && (
-                      <div className="card" style={{ borderWidth: "2px" }}>
-                        <img
-                          style={{
-                            width: "15rem",
-                            height: "15rem",
-                            alignSelf: "center",
-                          }}
-                          className="mt-1"
-                          src={`${process.env.REACT_APP_SERVER_URL}/api/posts/view_photo/${post._id}`}
-                        />
-                        <p className="text-center">{post.text}</p>
-
-                        <div
-                          style={{
-                            alignSelf: "center",
-                            backgroundColor: "#f5f5f0",
-                          }}
-                        >
-                          <button
-                            style={{
-                              backgroundColor: "#f5f5f0",
-                              border: "none",
-                            }}
-                            onClick={() => {
-                              history.push(`/loc/doubts/${post._id}`);
-                            }}
-                          >
-                            <i className="fas fa-comments fa-lg"></i>
-                            Doubts {post.doubts.length}
-                          </button>
-                          <button
-                            className="ml-4"
-                            style={{
-                              border: "none",
-                              backgroundColor: "#f5f5f0",
-                            }}
-                            onClick={() => {
-                              handleDoubtsDropdown(post._id);
-                            }}
-                          >
-                            <i className="fas fa-pen-square fa-lg"></i> Ask
-                            doubt
-                          </button>
-                        </div>
-
-                        {window.innerWidth <= 500 && window.innerWidth < 600 && (
-                          <div
-                            id={`${post._id}`}
-                            style={{ visibility: "hidden", height: "0" }}
-                          >
-                            <form onSubmit={(e) => handleSubmit(e, post._id)}>
-                              <input
-                                name="text"
-                                value={text}
-                                onChange={(e) => handleChange(e)}
-                                placeholder="Write your doubts.."
-                                style={{
-                                  outline: "none",
-                                  width: "82%",
-                                  borderRadius: "1rem",
-                                }}
-                                required
-                              />
-                              <button
-                                type="submit"
-                                style={{
-                                  backgroundColor: "white",
-                                  border: "none",
-                                }}
-                              >
-                                <i className="fas fa-paper-plane"></i>
-                              </button>
-                            </form>
-                          </div>
-                        )}
-
-                        {window.innerWidth >= 600 && window.innerWidth >= 1048 && (
-                          <div
-                            id={`${post._id}`}
-                            style={{ visibility: "hidden", height: "0" }}
-                          >
-                            <form onSubmit={(e) => handleSubmit(e, post._id)}>
-                              <input
-                                name="text"
-                                value={text}
-                                onChange={(e) => handleChange(e)}
-                                placeholder="Write your doubts.."
-                                style={{
-                                  outline: "none",
-                                  width: "96%",
-                                  marginLeft: "1rem",
-                                  borderRadius: "1rem",
-                                }}
-                                required
-                              />
-                              <button
-                                type="submit"
-                                style={{
-                                  backgroundColor: "white",
-                                  border: "none",
-                                }}
-                              >
-                                <i className="fas fa-paper-plane"></i>
-                              </button>
-                            </form>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {post.pdfdocument && (
-                      <div className="card" style={{ borderWidth: "2px" }}>
-                        <a
-                          className="btn mt-2"
-                          href={`${process.env.REACT_APP_SERVER_URL}/api/posts/view-pdf/${post._id}`}
-                          style={{
-                            width: "8rem",
-                            alignSelf: "center",
-                          }}
-                          download
-                        >
-                          <i className="fas fa-arrow-down btn btn-secondary">
-                            Download PDF
-                          </i>{" "}
-                        </a>
-                        <p className="text-center">{post.text}</p>
-                        <div
-                          style={{
-                            alignSelf: "center",
-                            backgroundColor: "#f5f5f0",
-                          }}
-                        >
-                          <button
-                            style={{
-                              backgroundColor: "#f5f5f0",
-                              border: "none",
-                            }}
-                            onClick={() => {
-                              history.push(`/loc/doubts/${post._id}`);
-                            }}
-                          >
-                            <i className="fas fa-comments fa-lg"></i>
-                            Doubts {post.doubts.length}
-                          </button>
-                          <button
-                            className="ml-4"
-                            style={{
-                              border: "none",
-                              backgroundColor: "#f5f5f0",
-                            }}
-                            onClick={() => {
-                              handleDoubtsDropdown(post._id);
-                            }}
-                          >
-                            <i className="fas fa-pen-square fa-lg"></i> Ask
-                            doubt
-                          </button>
-                        </div>
-
-                        {window.innerWidth <= 500 && window.innerWidth < 600 && (
-                          <div
-                            id={`${post._id}`}
-                            style={{ visibility: "hidden", height: "0" }}
-                          >
-                            <form onSubmit={(e) => handleSubmit(e, post._id)}>
-                              <input
-                                name="text"
-                                value={text}
-                                onChange={(e) => handleChange(e)}
-                                placeholder="Write your doubts.."
-                                style={{
-                                  outline: "none",
-                                  width: "82%",
-                                  borderRadius: "1rem",
-                                }}
-                                required
-                              />
-                              <button
-                                type="submit"
-                                style={{
-                                  backgroundColor: "white",
-                                  border: "none",
-                                }}
-                              >
-                                <i className="fas fa-paper-plane"></i>
-                              </button>
-                            </form>
-                          </div>
-                        )}
-
-                        {window.innerWidth >= 600 && window.innerWidth >= 1048 && (
-                          <div
-                            id={`${post._id}`}
-                            style={{ visibility: "hidden", height: "0" }}
-                          >
-                            <form onSubmit={(e) => handleSubmit(e, post._id)}>
-                              <input
-                                name="text"
-                                value={text}
-                                onChange={(e) => handleChange(e)}
-                                placeholder="Write your doubts.."
-                                style={{
-                                  outline: "none",
-                                  width: "96%",
-                                  marginLeft: "1rem",
-                                  borderRadius: "1rem",
-                                }}
-                                required
-                              />
-                              <button
-                                type="submit"
-                                style={{
-                                  backgroundColor: "white",
-                                  border: "none",
-                                }}
-                              >
-                                <i className="fas fa-paper-plane"></i>
-                              </button>
-                            </form>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {post.photos.length !== 0 && (
-                      <div className="card" style={{ borderWidth: "2px" }}>
-                        <img
-                          style={{
-                            width: "15rem",
-                            height: "15rem",
-                            alignSelf: "center",
-                            marginTop: "1rem",
-                          }}
-                          src={`${
-                            process.env.REACT_APP_SERVER_URL
-                          }/api/posts/get-images/${post._id}/${1}`}
-                        />
-                        <p className="text-center">{post.text}</p>
-                        <div className="text-center mb-2">
-                          <p>1/{post.photos.length}</p>
+                      {post.pdfdocument && (
+                        <div className="card" style={{ borderWidth: "2px" }}>
                           <a
-                            style={{ textDecoration: "none" }}
-                            href={`/loc/${post._id}/view`}
+                            className="btn mt-2"
+                            href={`${process.env.REACT_APP_SERVER_URL}/api/posts/view-pdf/${post._id}`}
+                            style={{
+                              width: "8rem",
+                              alignSelf: "center",
+                            }}
+                            download
                           >
-                            Click to view all
+                            <i className="fas fa-arrow-down btn btn-secondary">
+                              Download PDF
+                            </i>{" "}
                           </a>
-                        </div>
-                        <div
-                          style={{
-                            alignSelf: "center",
-                            backgroundColor: "#f5f5f0",
-                          }}
-                        >
-                          <button
+                          <p className="text-center">{post.text}</p>
+                          <div
                             style={{
-                              backgroundColor: "#f5f5f0",
-                              border: "none",
-                            }}
-                            onClick={() => {
-                              history.push(`/loc/doubts/${post._id}`);
-                            }}
-                          >
-                            <i className="fas fa-comments fa-lg"></i>
-                            Doubts {post.doubts.length}
-                          </button>
-                          <button
-                            className="ml-4"
-                            style={{
-                              border: "none",
+                              alignSelf: "center",
                               backgroundColor: "#f5f5f0",
                             }}
-                            onClick={() => {
-                              handleDoubtsDropdown(post._id);
+                          >
+                            <button
+                              style={{
+                                backgroundColor: "#f5f5f0",
+                                border: "none",
+                              }}
+                              onClick={() => {
+                                history.push(`/loc/doubts/${post._id}`);
+                              }}
+                            >
+                              <i className="fas fa-comments fa-lg"></i>
+                              Doubts {post.doubts.length}
+                            </button>
+                            <button
+                              className="ml-4"
+                              style={{
+                                border: "none",
+                                backgroundColor: "#f5f5f0",
+                              }}
+                              onClick={() => {
+                                handleDoubtsDropdown(post._id);
+                              }}
+                            >
+                              <i className="fas fa-pen-square fa-lg"></i> Ask
+                              doubt
+                            </button>
+                          </div>
+
+                          {window.innerWidth <= 500 && window.innerWidth < 600 && (
+                            <div
+                              id={`${post._id}`}
+                              style={{ visibility: "hidden", height: "0" }}
+                            >
+                              <form onSubmit={(e) => handleSubmit(e, post._id)}>
+                                <input
+                                  name="text"
+                                  value={text}
+                                  onChange={(e) => handleChange(e)}
+                                  placeholder="Write your doubts.."
+                                  style={{
+                                    outline: "none",
+                                    width: "82%",
+                                    borderRadius: "1rem",
+                                  }}
+                                  required
+                                />
+                                <button
+                                  type="submit"
+                                  style={{
+                                    backgroundColor: "white",
+                                    border: "none",
+                                  }}
+                                >
+                                  <i className="fas fa-paper-plane"></i>
+                                </button>
+                              </form>
+                            </div>
+                          )}
+
+                          {window.innerWidth >= 600 &&
+                            window.innerWidth >= 1048 && (
+                              <div
+                                id={`${post._id}`}
+                                style={{ visibility: "hidden", height: "0" }}
+                              >
+                                <form
+                                  onSubmit={(e) => handleSubmit(e, post._id)}
+                                >
+                                  <input
+                                    name="text"
+                                    value={text}
+                                    onChange={(e) => handleChange(e)}
+                                    placeholder="Write your doubts.."
+                                    style={{
+                                      outline: "none",
+                                      width: "96%",
+                                      marginLeft: "1rem",
+                                      borderRadius: "1rem",
+                                    }}
+                                    required
+                                  />
+                                  <button
+                                    type="submit"
+                                    style={{
+                                      backgroundColor: "white",
+                                      border: "none",
+                                    }}
+                                  >
+                                    <i className="fas fa-paper-plane"></i>
+                                  </button>
+                                </form>
+                              </div>
+                            )}
+                        </div>
+                      )}
+
+                      {post.photos.length !== 0 && (
+                        <div className="card" style={{ borderWidth: "2px" }}>
+                          <img
+                            style={{
+                              width: "15rem",
+                              height: "15rem",
+                              alignSelf: "center",
+                              marginTop: "1rem",
+                            }}
+                            src={`${
+                              process.env.REACT_APP_SERVER_URL
+                            }/api/posts/get-images/${post._id}/${1}`}
+                          />
+                          <p className="text-center">{post.text}</p>
+                          <div className="text-center mb-2">
+                            <p>1/{post.photos.length}</p>
+                            <a
+                              style={{ textDecoration: "none" }}
+                              href={`/loc/${post._id}/view`}
+                            >
+                              Click to view all
+                            </a>
+                          </div>
+                          <div
+                            style={{
+                              alignSelf: "center",
+                              backgroundColor: "#f5f5f0",
                             }}
                           >
-                            <i className="fas fa-pen-square fa-lg"></i> Ask
-                            doubt
-                          </button>
+                            <button
+                              style={{
+                                backgroundColor: "#f5f5f0",
+                                border: "none",
+                              }}
+                              onClick={() => {
+                                history.push(`/loc/doubts/${post._id}`);
+                              }}
+                            >
+                              <i className="fas fa-comments fa-lg"></i>
+                              Doubts {post.doubts.length}
+                            </button>
+                            <button
+                              className="ml-4"
+                              style={{
+                                border: "none",
+                                backgroundColor: "#f5f5f0",
+                              }}
+                              onClick={() => {
+                                handleDoubtsDropdown(post._id);
+                              }}
+                            >
+                              <i className="fas fa-pen-square fa-lg"></i> Ask
+                              doubt
+                            </button>
+                          </div>
+
+                          {window.innerWidth <= 500 && window.innerWidth < 600 && (
+                            <div
+                              id={`${post._id}`}
+                              style={{ visibility: "hidden", height: "0" }}
+                            >
+                              <form onSubmit={(e) => handleSubmit(e, post._id)}>
+                                <input
+                                  name="text"
+                                  value={text}
+                                  onChange={(e) => handleChange(e)}
+                                  placeholder="Write your doubts.."
+                                  style={{
+                                    outline: "none",
+                                    width: "82%",
+                                    borderRadius: "1rem",
+                                  }}
+                                  required
+                                />
+                                <button
+                                  type="submit"
+                                  style={{
+                                    backgroundColor: "white",
+                                    border: "none",
+                                  }}
+                                >
+                                  <i className="fas fa-paper-plane"></i>
+                                </button>
+                              </form>
+                            </div>
+                          )}
+
+                          {window.innerWidth >= 600 &&
+                            window.innerWidth >= 1048 && (
+                              <div
+                                id={`${post._id}`}
+                                style={{ visibility: "hidden", height: "0" }}
+                              >
+                                <form
+                                  onSubmit={(e) => handleSubmit(e, post._id)}
+                                >
+                                  <input
+                                    name="text"
+                                    value={text}
+                                    onChange={(e) => handleChange(e)}
+                                    placeholder="Write your doubts.."
+                                    style={{
+                                      outline: "none",
+                                      width: "96%",
+                                      marginLeft: "1rem",
+                                      borderRadius: "1rem",
+                                    }}
+                                    required
+                                  />
+                                  <button
+                                    type="submit"
+                                    style={{
+                                      backgroundColor: "white",
+                                      border: "none",
+                                    }}
+                                  >
+                                    <i className="fas fa-paper-plane"></i>
+                                  </button>
+                                </form>
+                              </div>
+                            )}
                         </div>
+                      )}
+                    </div>
+                    <p className="m-2">{post.date.substring(0, 10)}</p>
 
-                        {window.innerWidth <= 500 && window.innerWidth < 600 && (
-                          <div
-                            id={`${post._id}`}
-                            style={{ visibility: "hidden", height: "0" }}
-                          >
-                            <form onSubmit={(e) => handleSubmit(e, post._id)}>
-                              <input
-                                name="text"
-                                value={text}
-                                onChange={(e) => handleChange(e)}
-                                placeholder="Write your doubts.."
-                                style={{
-                                  outline: "none",
-                                  width: "82%",
-                                  borderRadius: "1rem",
-                                }}
-                                required
-                              />
-                              <button
-                                type="submit"
-                                style={{
-                                  backgroundColor: "white",
-                                  border: "none",
-                                }}
-                              >
-                                <i className="fas fa-paper-plane"></i>
-                              </button>
-                            </form>
-                          </div>
-                        )}
-
-                        {window.innerWidth >= 600 && window.innerWidth >= 1048 && (
-                          <div
-                            id={`${post._id}`}
-                            style={{ visibility: "hidden", height: "0" }}
-                          >
-                            <form onSubmit={(e) => handleSubmit(e, post._id)}>
-                              <input
-                                name="text"
-                                value={text}
-                                onChange={(e) => handleChange(e)}
-                                placeholder="Write your doubts.."
-                                style={{
-                                  outline: "none",
-                                  width: "96%",
-                                  marginLeft: "1rem",
-                                  borderRadius: "1rem",
-                                }}
-                                required
-                              />
-                              <button
-                                type="submit"
-                                style={{
-                                  backgroundColor: "white",
-                                  border: "none",
-                                }}
-                              >
-                                <i className="fas fa-paper-plane"></i>
-                              </button>
-                            </form>
-                          </div>
-                        )}
-                      </div>
-                    )}
+                    {isAuth().designation === "HOD" ||
+                      (isAuth().designation === "Faculty" && (
+                        <div className="ml-2">
+                          <p>
+                            {post.department} -- {post.year}
+                            <br />
+                            {post.institution}
+                          </p>
+                        </div>
+                      ))}
                   </div>
-                  <p className="m-2">{post.date.substring(0, 10)}</p>
-
-                  {isAuth().designation === "HOD" ||
-                    (isAuth().designation === "Faculty" && (
-                      <div className="ml-2">
-                        <p>
-                          {post.department} -- {post.year}
-                          <br />
-                          {post.institution}
-                        </p>
-                      </div>
-                    ))}
-                </div>
-              )
-          )}
+                )
+            )}
         </div>
       )}
       {!token && history.push("/")}
