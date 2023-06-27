@@ -22,6 +22,10 @@ mongoose
 
 app.use(cors());
 
+app.get("/", (req, res) => {
+  return res.status(200).json({ message: "SERVER WORKING" });
+});
+
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/posts", require("./routes/posts"));
